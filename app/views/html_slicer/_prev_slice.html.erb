@@ -1,0 +1,10 @@
+<%# Link to the "Previous" slice
+  - available local variables
+    url:           url to the previous slice
+    current_slice: a slice object for the currently displayed slice
+    slice_number:  total number of slices
+    remote:        data-remote
+-%>
+<span class="prev">
+  <%= link_to_unless current_slice.first?, raw(t 'views.html_slicer.previous'), url, :rel => 'prev', :remote => remote %>
+</span>
