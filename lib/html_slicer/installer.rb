@@ -4,16 +4,17 @@ module HtmlSlicer
     
     # The basic implementation method.
     #
-    # # slice <method_name>, <configuration>
+    #   slice <method_name>, <configuration>, [:config => <:style>]*
     #
-    # # - where: <method_name> - any local method or local variable which returns String.
-    # #          <configuration> - Hash of configuration options.
+    # where: 
+    # * <method_name> - any method or local variable which returns source String (can be called with .send()).
+    # * <configuration> - Hash of configuration options and/or +:config+ parameter.
     #
     # === Example:
     # 
-    # class Article < ActiveRecord::Base
-    #   slice :content, :as => :paged, :slice => {:maximum => 2000}, :resize => {:width => 600}
-    # end
+    #   class Article < ActiveRecord::Base
+    #     slice :content, :as => :paged, :slice => {:maximum => 2000}, :resize => {:width => 600}
+    #   end
     #
     # === Where:
     # * <tt>:content</tt> is a method name or local variable, that return a target String object.

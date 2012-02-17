@@ -3,7 +3,7 @@
 A little gem for Rails 3 helps you to implement smart way to split textual content, the quick approach to create 'pageable' views for ActiveRecord Model's attributes or just independent strings or any other Ruby classes.
 Or course it can split HTML content. More over, it can 'resize' HTML tags having <tt>width=</tt> attribute*.
 
-* Imagine you want to resize <iframe> embeddings from YouTube saved in static content.
+  * Imagine you want to resize <iframe> embeddings from YouTube saved in static content.
 
 
 == Features
@@ -52,7 +52,7 @@ Then bundle:
 
   slice <method_name>, <configuration>, [:config => <:style>]*
 
-  where: 
+where: 
 * <method_name> - any method or local variable which returns source String (can be called with .send()).
 * <configuration> - Hash of configuration options and/or +:config+ parameter.
 
@@ -62,7 +62,7 @@ Then bundle:
     slice :content, :as => :paged, :slice => {:maximum => 20}, :resize => {:width => 300}
   end
   
-  where:
+where:
 * <tt>:content</tt> is an attribute accessor for Article which return a target String object.
 * <tt>:as</tt> is a name of basic accessor for result.
 * <tt>:slice</tt> is a hash of +slicing options+ as a part of +configuration+.
@@ -130,15 +130,13 @@ In many cases we just need the first slice to perform it as a partial.
   * Actually the hash is a argument for HTML::Conditions class (the part of ActionPack's html_scanner block). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
   This is a very flexible utility to navigate via HTML content. Read native documentation for details.
   
-  For example: ID for <hr class="break"> tag is a hash:
-  
-  {:tag => "hr", :attributes => {:class => "break"}}
+  For example: ID for <tt><hr class="break"> tag</tt> is a hash: <tt>{:tag => "hr", :attributes => {:class => "break"}}</tt>
 
 === Resizing options
 
 * <tt>:width</tt> is a Fixnum number of pixels as a target value to squeeze the HTML tag. It does automatically proportional with the +:height+ (if existed). The percentage values ignored.
-* <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to resize.*
-* <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to resize.*
+* <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to resize.
+* <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to resize.
 
 === Processors
 
@@ -202,10 +200,10 @@ Implementing HtmlSlicer accessor as:
 
 we can override/complete any configuration.
   
-  Using +:config+ key we can use one of stylized configurations like:
+Using +:config+ key we can use one of stylized configurations like:
   
   class Post < ActiveRecord::Base
-    slice :content, :config => :paged, :slice = {:complete => "PAGE", :maximum => 3000}
+    slice :content, :config => :paged, :slice = {:complete => /\s+/, :maximum => 3000}
   end
 
 Passing the block we get more flexible approach to configure slicer like:
