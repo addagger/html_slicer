@@ -51,7 +51,7 @@ module HtmlSlicer
     # === Premature configuration (+:config+ parameter):
     # Stylizied general configuration can be used for many implementations, such as:
     #   
-    #  # For exmaple, we set the global stylized config:
+    #  # For example, we set the global stylized config:
     #
     #   HtmlSlicer.configure(:paged_config) do |config|
     #     config.as = :page
@@ -86,32 +86,32 @@ module HtmlSlicer
     # === See README.rdoc for details about +:slice+ and +:resize+ options etc.
     #
     def slice(*args, &block)
-		  attr_name = args.first
-		  raise(NameError, "Attribute name expected!") unless attr_name
-		  
-		  options = args.extract_options!
-		  config = HtmlSlicer.config(options.delete(:config)).duplicate # Configuration instance for each single one implementation
-		  if options.present? # Accepts options from args
-		    options.each do |key, value|
-		      config.send("#{key}=", value)
-	      end
-	    end
-		  if block_given? # Accepts options from block
-		    yield config
-	    end
-	    if config.processors
-	      Array.wrap(config.processors).each do |name|
-	        HtmlSlicer.load_processor!(name)
+      attr_name = args.first
+      raise(NameError, "Attribute name expected!") unless attr_name
+      
+      options = args.extract_options!
+      config = HtmlSlicer.config(options.delete(:config)).duplicate # Configuration instance for each single one implementation
+      if options.present? # Accepts options from args
+        options.each do |key, value|
+          config.send("#{key}=", value)
         end
       end
-			method_name = config.as||"#{attr_name}_slice"
-			class_exec do
-			  define_method method_name do
-    	    var_name = "@_#{method_name}"
-    	    instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Slicing.new(send(attr_name), config.config))
+      if block_given? # Accepts options from block
+        yield config
+      end
+      if config.processors
+        Array.wrap(config.processors).each do |name|
+          HtmlSlicer.load_processor!(name)
         end
-		  end
-	  end
+      end
+      method_name = config.as||"#{attr_name}_slice"
+      class_exec do
+        define_method method_name do
+          var_name = "@_#{method_name}"
+          instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Slicing.new(send(attr_name), config.config))
+        end
+      end
+    end
   end
   
 end

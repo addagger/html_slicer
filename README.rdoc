@@ -50,58 +50,59 @@ Then bundle:
 
 === Basic appoach
 
-	slice <method_name>, <configuration>, [:config => <:style>]*
+  slice <method_name>, <configuration>, [:config => <:style>]*
 
-	* where: <method_name> - any method or local variable which returns source String (can be called with .send()).
-	         <configuration> - Hash of configuration options and/or +:config+ parameter.
+  where: 
+* <method_name> - any method or local variable which returns source String (can be called with .send()).
+* <configuration> - Hash of configuration options and/or +:config+ parameter.
 
 === Basic example
 
-	class Article < ActiveRecord::Base
-	  slice :content, :as => :paged, :slice => {:maximum => 20}, :resize => {:width => 300}
-	end
-	
-	Where:
-	* <tt>:content</tt> is an attribute accessor for Article which return a target String object.
-	* <tt>:as</tt> is a name of basic accessor for result.
-	* <tt>:slice</tt> is a hash of +slicing options+ as a part of +configuration+.
-	* <tt>:resize</tt> is a hash of +resizing options+ as a part of +configuration+.
+  class Article < ActiveRecord::Base
+    slice :content, :as => :paged, :slice => {:maximum => 20}, :resize => {:width => 300}
+  end
+  
+  where:
+* <tt>:content</tt> is an attribute accessor for Article which return a target String object.
+* <tt>:as</tt> is a name of basic accessor for result.
+* <tt>:slice</tt> is a hash of +slicing options+ as a part of +configuration+.
+* <tt>:resize</tt> is a hash of +resizing options+ as a part of +configuration+.
 
-	You can define any key of configuration you want. Otherwise, default configuration options (if available) will be picked up automatically.
-	
-	Console:
-	
-	@article = Article.find(1)
-	@article.content
-	# => "Words like violence break the silence\r\nCome crashing in into my little world\r\n<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/ms0bd_hCZsk\" frameborder=\"0\" allowfullscreen></iframe>\r\nPainful to me, pierce right through me\r\nCan't you understand, oh my little girl?"
-	
-	@article_paged = @article.paged
-	# => "Words like violence bre"
+You can define any key of configuration you want. Otherwise, default configuration options (if available) will be picked up automatically.
+  
+Console:
+  
+  @article = Article.find(1)
+  @article.content
+  # => "Words like violence break the silence\r\nCome crashing in into my little world\r\n<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/ms0bd_hCZsk\" frameborder=\"0\" allowfullscreen></iframe>\r\nPainful to me, pierce right through me\r\nCan't you understand, oh my little girl?"
+  
+  @article_paged = @article.paged
+  # => "Words like violence bre"
 
-	* the +nil+ argument assumes it is number +1+.
-	
-	@article_paged.slice!(2)
-	# => "ak the silence"
-	
-	* the passed slice number is remembered.
-	
-	@article_paged.slice!(4)
-	# => "rld
-	<iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"
+* the +nil+ argument assumes it is number +1+.
+  
+  @article_paged.slice!(2)
+  # => "ak the silence"
+  
+  * the passed slice number is remembered.
+  
+  @article_paged.slice!(4)
+  # => "rld
+  <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"
 
 === Configuration options
 
 All configuration keys:
 * <tt>:as</tt> is a name of basic accessor for sliced +object+ (result).
-* <tt>:slice</tt> is a hash of +slicing options+.
-* <tt>:resize</tt> is a hash of +resizing options+.
-* <tt>:processors</tt> - +processors+ names.
+* <tt>:slice</tt> is a hash of slicing options.
+* <tt>:resize</tt> is a hash of resizing options.
+* <tt>:processors</tt> - processors names.
 * <tt>:window</tt> - parameter for ActionView: The "inner window" size (4 by default).
 * <tt>:outer_window</tt> - parameter for ActionView: The "outer window" size (0 by default).
 * <tt>:left</tt> - parameter for ActionView: The "left outer window" size (0 by default).
 * <tt>:right</tt> - parameter for ActionView: The "right outer window" size (0 by default).
 * <tt>:params</tt> - parameter for ActionView: url_for parameters for the links (:controller, :action, etc.)
-* <tt>:param_name</tt> - parameter for ActionView: parameter name for slice number in the links. Accepts +symbol+, +string+, +array+.
+* <tt>:param_name</tt> - parameter for ActionView: parameter name for slice number in the links. Accepts +Symbol+, +String+, +Array+.
 * <tt>:remote</tt> - parameter for ActionView: Ajax? (false by default)
 
 * <tt>:config</tt> - special key for using stylized configuration (premature configuration).
@@ -109,22 +110,29 @@ All configuration keys:
 === Slicing options
 
 * <tt>:unit</tt> is a +Regexp/String/Hash+ description of text's units counted to split the text by slices.
-When value is a +Hash+, it assumes the unit is a HTML tag (look at +:only/:except+ options for details).
+When value is a +Hash+, it assumes the unit is a HTML tag (look at :only/:except options for details).
 Undefined value or +nil+ assumes it default Regexp /&#?\w+;|\S/. As you see it counts any regular character/or HTML special character as a unit.
 * <tt>:maximum</tt> is a +Fixnum+ number of units to be a one slice.
+
 If +:unit+ defined as Regexp or String, default value is 300.
+
 If +:unit+ defined as Hash, default value is 10.
+
 If +:unit+ is default, default value is 2000.
+
 * <tt>:complete</tt> is a +Regexp+ description of a character used to complete the slice.
-For example in case you want to end the slice with the complete word, using +:complete => /\s+|\z/+ the counter would continue the slice until the first whitespace character.
+For example in case you want to end the slice with the complete word, using :complete => /\s+|\z/ the counter would continue the slice until the first whitespace character.
 * <tt>:limit</tt> - a +Fixnum+ limit number of slices.
 In many cases we just need the first slice to perform it as a partial.
 * <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to slice.*
 * <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to slice.*
 
-	* Actually the hash is a argument for HTML::Conditions class (the part of ActionPack's html_scanner block). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
-	This is a very flexible utility to navigate via HTML content. Read native documentation for details.
-	For example: ID for <hr class="break"> tag is a hash {:tag => "hr", :attributes => {:class => "break"}}
+  * Actually the hash is a argument for HTML::Conditions class (the part of ActionPack's html_scanner block). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
+  This is a very flexible utility to navigate via HTML content. Read native documentation for details.
+  
+  For example: ID for <hr class="break"> tag is a hash:
+  
+  {:tag => "hr", :attributes => {:class => "break"}}
 
 === Resizing options
 
@@ -135,21 +143,21 @@ In many cases we just need the first slice to perform it as a partial.
 === Processors
 
 Used to transform the source text before it sliced. Many of us are using any markup languages for dynamic contents.
-This is it. Just create any class as a subclass of +HtmlSlicer::Processor+, put it in +/lib/html_slicer_processors+ directory and define its name within the +:processors+ option.
+This is it. Just create any class as a subclass of HtmlSlicer::Processor, put it in +/lib/html_slicer_processors+ directory and define its name within the +:processors+ option.
 
 Example:
-	
-	# /lib/html_slicer_processors/textilized.rb:
+  
+  # /lib/html_slicer_processors/textilized.rb:
 
-	class Textilized < HtmlSlicer::Processor
+  class Textilized < HtmlSlicer::Processor
     def make
-	    ERB::Util.textilize(content)
-	  end
+      ERB::Util.textilize(content)
+    end
   end
 
 Processor class have to include +make+ method, which return transformed String. The +content+ accessor is a source String.
 
-Then you can pass the option +:processors => :textilized+
+Then you can pass the option +:processors=>:textilized+
 The value of option can be +Array+ of names, if you use more than one processors.
 
 === Configuration levels
@@ -187,31 +195,35 @@ Along with common global configuration, you can define stylized configuration pa
 Missing options inherited from global.
 
 === Instance configuration
-	
-Implementing HtmlSlicer accessor as: +slice <method_name>, <configuration>, [:config => <:style>]*+ we can override/complete any configuration.
-	
-	Using +:config+ key we can use one of stylized configurations like:
-	
+  
+Implementing HtmlSlicer accessor as:
+
+  slice <method_name>, <configuration>, [:config => <:style>]*
+
+we can override/complete any configuration.
+  
+  Using +:config+ key we can use one of stylized configurations like:
+  
   class Post < ActiveRecord::Base
     slice :content, :config => :paged, :slice = {:complete => "PAGE", :maximum => 3000}
   end
 
-	Passing the block we get more flexible approach to configure slicer like:
-	
-	class Post < ActiveRecord::Base
+Passing the block we get more flexible approach to configure slicer like:
+  
+  class Post < ActiveRecord::Base
     slice :content, :config => :paged, :as => :blabla do |config|
-			config.slice[:maximum] = 3000 
-			config.resize.merge! :only => {:tag => "p"}
-			config.processors << :decorated
-		end
+      config.slice[:maximum] = 3000 
+      config.resize.merge! :only => {:tag => "p"}
+      config.processors << :decorated
+    end
   end
 
 == Views
 
-  Just call the +slice+ helper:
-    <%= slice @article_paged %>
+Just call the +slice+ helper:
+  <%= slice @article_paged %>
 
-  This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 <+nav+> tag.
+This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 <+nav+> tag.
 
 === Helpers
 
@@ -276,7 +288,7 @@ Keys and the default values are the following. You can override them by adding t
 
 === Param name
 
-You can define +:param_name+ as a +symbol+ or +string+, or as an +array of any object that responses +.to_s+ method and returns +string+.
+You can define +:param_name+ as a +symbol+ or +string+, or as an +array+ of any object that responses +.to_s+ method and returns +string+.
 Passing +array+ is the way to define nested :param_name.
 
 Examples:
@@ -293,8 +305,8 @@ Examples:
 
 There is no special approaches. Just +extend+ target class to +HtmlSlicer::Installer+ and call the method +slice+ as described before, like:
 
-	String.extend HtmlSlicer::Installer
-	String.slice :to_s, :as => :page, :config => :for_string
+  String.extend HtmlSlicer::Installer
+  String.slice :to_s, :as => :page, :config => :for_string
 
 == Questions, Feedback
 

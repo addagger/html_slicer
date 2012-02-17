@@ -5,5 +5,5 @@
     slice_number  : total number of slices
     remote        : data-remote
 span.last
-	== link_to_unless current_slice.last?, raw(t 'views.html_slicer.last'), url, {:remote => remote}
+  == link_to_unless current_slice.last?, raw(t 'views.html_slicer.last'), url, {:remote => remote}
 '
