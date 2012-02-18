@@ -231,7 +231,7 @@ Model:
 Controller:
 
   @article = Article.find(1)
-  @article_paged = @article.paged.slice!(params[:page])
+  @article_paged = @article.paged.slice!(params[:slice])
 
 On a View just call the +slice+ helper:
   <%= slice @article_paged %>

@@ -18,7 +18,7 @@ module HtmlSlicer
     def initialize(params = {}, param_name = nil, value = nil)
       super()
       param_subhash = case param_name
-      when Array then hashup(param_name << value)
+      when Array then hashup(param_name.collect {|e| e.to_s} << value)
       when String, Symbol then {param_name => value}
       else {}
       end

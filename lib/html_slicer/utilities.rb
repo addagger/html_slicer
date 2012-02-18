@@ -11,6 +11,39 @@ module HtmlSlicer
       end
     end
 
+		module Deepcopy
+			# Return the 'deep' brand new copy of Hash or Array. All nested hashes/arrays rebuilded at the same way.
+			def deepcopy(object)
+				array_copy = Proc.new do |a|
+					duplicate = Array.new
+					a.each do |value|
+						duplicate << case value
+						when Hash then hash_copy.call(value)
+						when Array then array_copy.call(value)
+						else value
+						end
+					end
+					duplicate
+				end
+				hash_copy = Proc.new do |h|
+					duplicate = Hash.new
+					h.each do |key, value|
+						duplicate[key] = case value
+						when Hash then hash_copy.call(value)
+						when Array then array_copy.call(value)
+						else value
+						end
+					end
+					duplicate
+				end
+				case object
+				when Hash then hash_copy.call(object)
+				when Array then array_copy.call(object)
+				else object
+				end
+			end
+		end
+
     module HashupArray
       # Return a nested Hash object from Array's elements sequence, where elements used as names of +hash+ keys.
       # The last element of array would be the last nested value.
@@ -36,11 +69,8 @@ module HtmlSlicer
     end
     
     module NestedMergeHash
-      # Return the 'deep' brand new copy of Hash. All nested hashes rebuilded too at the same way.
-      def deepcopy(hash)
-        raise(TypeError, "Hash expected!") unless hash.is_a?(Hash)
-        Marshal::load(Marshal::dump(hash))
-      end
+	
+      include Deepcopy
 
       # Return the merged Hash with another +hash+, where the possible child hashes are also merged.
       #

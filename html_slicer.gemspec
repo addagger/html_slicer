@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Valery Kvon"]
   s.email       = ["addagger@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = %q{http://github.com/addagger/HtmlSlicer}
   s.summary     = %q{HTML text slicer}
   s.description = %q{A "smart" way to slice HTMLsed text to pages, also it can optionally resize included "width/height" attributes of HTML tags like <iframe>, <object>, <img> etc.}
   

@@ -44,7 +44,10 @@ module HtmlSlicer
   
   # need a Class for 3.0
   class Configuration #:nodoc:
+    
     include ActiveSupport::Configurable
+    include HtmlSlicer::Utilities::Deepcopy
+    
     config_accessor :as
     config_accessor :slice
     config_accessor :resize
@@ -55,16 +58,18 @@ module HtmlSlicer
     config_accessor :right
     config_accessor :param_name
 
+    def slice # Ugly coding. Override Hash::slice method
+      config[:slice]
+    end
+
     def param_name
       config.param_name.respond_to?(:call) ? config.param_name.call : config.param_name
     end
     
     def duplicate
-      dup = self.class.new
-      config.each do |key, value|
-        dup.send("#{key}=", value)
-      end
-      dup
+      dup = Configuration.new
+			dup.config.replace(deepcopy(config))
+			dup
     end
     
   end
