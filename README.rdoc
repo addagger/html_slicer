@@ -81,14 +81,14 @@ Console:
 
 * the +nil+ argument assumes it is number +1+.
   
-	<tt>@article_paged.slice!(2)
-  # => "ak the silence"</tt>
+  @article_paged.slice!(2)
+  # => "ak the silence"
   
   * the passed slice number is remembered.
   
-  <tt>@article_paged.slice!(4)
+  @article_paged.slice!(4)
   # => "rld
-  <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"</tt>
+  <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"
 
 === Configuration options
 
@@ -220,7 +220,22 @@ Passing the block we get more flexible approach to configure slicer like:
 
 == Views
 
-Just call the +slice+ helper:
+=== Presumption
+
+* Model:
+
+  class Article < ActiveRecord::Base
+    slice :content, :as => :paged, :slice => {:maximum => 1000, :complete => /\s+|\z/}
+  end
+
+* Controller:
+
+  @article = Article.find(1)
+  @article_paged = @article.paged.slice!(params[:page])
+
+* On a View:
+
+  Just call the +slice+ helper:
   <%= slice @article_paged %>
 
 This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 <+nav+> tag.
