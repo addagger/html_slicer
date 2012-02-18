@@ -109,7 +109,7 @@ module HtmlSlicer
       class_exec do
         define_method method_name do
           var_name = "@_#{method_name}"
-          instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Slicing.new(send(attr_name), config.config))
+          instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Interface.new(send(attr_name), config.config))
         end
       end
     end

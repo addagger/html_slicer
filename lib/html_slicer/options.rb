@@ -13,12 +13,13 @@ module HtmlSlicer
   end
   
   class SliceOptions < Options #:nodoc:
-    attr_reader :unit, :maximum, :complete, :limit
+    attr_reader :unit, :maximum, :complete, :text_break, :limit
     def initialize(options)
       super(options)
       @unit = case options[:unit]
-      when String, Regexp, Hash then options[:unit]
-      when nil then :char
+      when Hash, Regexp then options[:unit]
+      when String then /#{options[:unit]}/
+      when nil then /&#?\w+;|\S/
       else raise "Invalid :unit definition '#{options[:unit].inspect}'"
       end
       @maximum = case options[:maximum]
@@ -44,6 +45,7 @@ module HtmlSlicer
       when Fixnum, nil then options[:limit]
       else raise "Invalid :limit option definition '#{options[:limit].inspect}'"
       end
+      @text_break = options[:text_break]
     end
   end
   

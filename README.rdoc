@@ -48,7 +48,7 @@ Then bundle:
 
 == Implementation
 
-=== Basic appoach
+=== Basic approach
 
   slice <method_name>, <configuration>, [:config => <:style>]*
 
@@ -65,8 +65,8 @@ where:
 where:
 * <tt>:content</tt> is an attribute accessor for Article which return a target String object.
 * <tt>:as</tt> is a name of basic accessor for result.
-* <tt>:slice</tt> is a hash of +slicing options+ as a part of +configuration+.
-* <tt>:resize</tt> is a hash of +resizing options+ as a part of +configuration+.
+* <tt>:slice</tt> is a hash of <tt>slicing options</tt> as a part of configuration.
+* <tt>:resize</tt> is a hash of <tt>resizing options</tt> as a part of configuration.
 
 You can define any key of configuration you want. Otherwise, default configuration options (if available) will be picked up automatically.
   
@@ -81,14 +81,14 @@ Console:
 
 * the +nil+ argument assumes it is number +1+.
   
-  @article_paged.slice!(2)
-  # => "ak the silence"
+	<tt>@article_paged.slice!(2)
+  # => "ak the silence"</tt>
   
   * the passed slice number is remembered.
   
-  @article_paged.slice!(4)
+  <tt>@article_paged.slice!(4)
   # => "rld
-  <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"
+  <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"</tt>
 
 === Configuration options
 
@@ -110,7 +110,7 @@ All configuration keys:
 === Slicing options
 
 * <tt>:unit</tt> is a +Regexp/String/Hash+ description of text's units counted to split the text by slices.
-When value is a +Hash+, it assumes the unit is a HTML tag (look at :only/:except options for details).
+When value is a +Hash+, it assumes the unit is a HTML tag (look at <tt>:only/:except</tt> options for details).
 Undefined value or +nil+ assumes it default Regexp /&#?\w+;|\S/. As you see it counts any regular character/or HTML special character as a unit.
 * <tt>:maximum</tt> is a +Fixnum+ number of units to be a one slice.
 
@@ -124,6 +124,8 @@ If +:unit+ is default, default value is 2000.
 For example in case you want to end the slice with the complete word, using :complete => /\s+|\z/ the counter would continue the slice until the first whitespace character.
 * <tt>:limit</tt> - a +Fixnum+ limit number of slices.
 In many cases we just need the first slice to perform it as a partial.
+* <tt>:text_break</tt> - a responsible <tt>.to_s</tt> value of text breaks between slices.
+It can be suspension points or any other symbol.
 * <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to slice.*
 * <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to slice.*
 
@@ -155,7 +157,7 @@ Example:
 
 Processor class have to include +make+ method, which return transformed String. The +content+ accessor is a source String.
 
-Then you can pass the option +:processors=>:textilized+
+Then you can pass the option <tt>:processors=>:textilized</tt>
 The value of option can be +Array+ of names, if you use more than one processors.
 
 === Configuration levels

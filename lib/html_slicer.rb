@@ -10,6 +10,8 @@ module HtmlSlicer
     require 'html_slicer/options'
     require 'html_slicer/processor'
     require 'html_slicer/slicing'
+    require 'html_slicer/resizing'
+    require 'html_slicer/interface'
     require 'html_slicer/engine'
     require 'html_slicer/helpers/action_view_extension'
     require 'html_slicer/helpers/slicer'

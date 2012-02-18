@@ -10,7 +10,7 @@ module HtmlSlicer
         if stuff.respond_to?(:to_s)
           stuff.to_s
         else
-          raise(TypeError, "String or respondable :to_s object expected, #{stuff.class} passed.")
+          raise(TypeError, "String or responsible :to_s object expected, #{stuff.class} passed.")
         end
       end
     end

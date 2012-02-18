@@ -1,7 +1,16 @@
 module HtmlSlicer
   
   module Utilities
-    
+
+    module ParseNode
+      def parse(node, &block)
+        node.children.each do |node|
+          yield node if block_given?
+          parse(node, &block) if node.is_a?(HTML::Tag)
+        end
+      end
+    end
+
     module HashupArray
       # Return a nested Hash object from Array's elements sequence, where elements used as names of +hash+ keys.
       # The last element of array would be the last nested value.
