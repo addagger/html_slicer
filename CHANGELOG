@@ -1,4 +1,8 @@
-== 0.0.3a
+== 0.0.4
+
+* Bugfixes: with param names again... sorry
+
+== 0.0.3
 
 * Bugfixes: block-style configuration return blank hash (override Hash::slice method)
 * Bugfixes: inherited configuration isn't pure (added deepcopy method of Hash/Array)
