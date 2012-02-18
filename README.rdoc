@@ -222,18 +222,18 @@ Passing the block we get more flexible approach to configure slicer like:
 
 === Presumption
 
-* Model:
+Model:
 
   class Article < ActiveRecord::Base
     slice :content, :as => :paged, :slice => {:maximum => 1000, :complete => /\s+|\z/}
   end
 
-* Controller:
+Controller:
 
   @article = Article.find(1)
   @article_paged = @article.paged.slice!(params[:page])
 
-* On a View:
+On a View:
 
   Just call the +slice+ helper:
   <%= slice @article_paged %>
