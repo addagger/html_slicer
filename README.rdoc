@@ -233,9 +233,7 @@ Controller:
   @article = Article.find(1)
   @article_paged = @article.paged.slice!(params[:page])
 
-On a View:
-
-  Just call the +slice+ helper:
+On a View just call the +slice+ helper:
   <%= slice @article_paged %>
 
 This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 <+nav+> tag.
@@ -262,7 +260,7 @@ This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 
     <%= slicing @article_paged, :left => 1, :right => 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 slices in total.
 
-* changing the parameter name (:+param_name+) for the links
+* changing the parameter name (+:param_name+) for the links
 
     <%= slicing @article_paged, :param_name => :page %>
   This would modify the query parameter name on each links.
