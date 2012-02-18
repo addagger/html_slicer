@@ -19,7 +19,7 @@ module HtmlSlicer
       super()
       param_subhash = case param_name
       when Array then hashup(param_name.collect {|e| e.to_s} << value)
-      when String, Symbol then {param_name => value}
+      when String, Symbol then {param_name.to_s => value}
       else {}
       end
       update(nested_merge(params, param_subhash))
