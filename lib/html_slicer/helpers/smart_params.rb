@@ -2,7 +2,7 @@ module HtmlSlicer
 
   class SmartParams < Hash
     # Implements smart and flexible +params+ merging.
-    # Method accepts passed +params+ hash and merge it with a new +param_name+ and it's value.
+    # Method accepts passed +params+ hash and merge it with a new :+param_name+ and it's value.
     # In the case when you passed +param_name+ option as an Array, method returns merged new
     # instance of hashed params where all subhashes merged into the same way.
     #

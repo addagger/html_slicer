@@ -69,7 +69,6 @@ module HtmlSlicer
     end
     
     module NestedMergeHash
-  
       include Deepcopy
 
       # Return the merged Hash with another +hash+, where the possible child hashes are also merged.
