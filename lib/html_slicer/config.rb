@@ -68,8 +68,8 @@ module HtmlSlicer
     
     def duplicate
       dup = Configuration.new
-			dup.config.replace(deepcopy(config))
-			dup
+      dup.config.replace(deepcopy(config))
+      dup
     end
     
   end

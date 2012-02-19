@@ -1,11 +1,11 @@
 == 0.0.4
 
-* Bugfixes: with param names again... sorry
+* Bug fixes: with param names again... sorry
 
 == 0.0.3
 
-* Bugfixes: block-style configuration return blank hash (override Hash::slice method)
-* Bugfixes: inherited configuration isn't pure (added deepcopy method of Hash/Array)
+* Bug fixes: block-style configuration return blank hash (override Hash::slice method)
+* Bug fixes: inherited configuration isn't pure (added deep copy method of Hash/Array)
 
 == 0.0.2
 
