@@ -11,7 +11,7 @@ A little gem for Rails 3 helps you implement a smart way to split textual conten
 Does not globally pollute +Array+, +Hash+, +Object+ or <tt>AR::Base</tt>.
 
 === Easy to use
-Bundle the gem, then your models are ready to implement the slicing ability.
+Bundle the gem, then your models are ready to implement slicing.
 
 === Flexible configuration
 Besides global configuration (default), you can create stylized app-level configurations; also any configuration can be tuned for every single implementation.
@@ -152,7 +152,7 @@ Example:
     end
   end
 
-Processor class has to include make method, which returns transformed String. The content accessor is a source String.
+Processor class has to include +make+ method, which returns transformed String. The content accessor is a source String.
 Then you can set the option <tt>:processors => :textilized</tt>. The value of option can be Array of names, if you use more than one processor.
 
 === Configuration levels
@@ -197,7 +197,7 @@ If you implement HtmlSlicer accessor this way:
 
 you can override/complete any configuration.
   
-By applying  :config key you can use one of stylized configurations:
+By applying +:config+ key you can use one of stylized configurations:
   
   class Post < ActiveRecord::Base
     slice :content, :config => :paged, :slice = {:complete => /\s+/, :maximum => 3000}
