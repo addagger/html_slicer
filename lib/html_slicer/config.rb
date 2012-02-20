@@ -31,7 +31,7 @@ module HtmlSlicer
   #     slice :content, :config => :paged
   #   end
   #
-  # * Missing required parameters pick up automatically from global configuration set before.
+  # * Missing options are inherited from global one.
   # 
   def self.configure(style = nil, &block)
     yield eval("@config#{"_#{style}" if style} ||= #{style ? "@config.duplicate" : "Configuration.new"}")

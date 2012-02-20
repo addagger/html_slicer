@@ -88,5 +88,5 @@ module HtmlSlicer
       output.html_safe
     end
   end
-	
+  
 end

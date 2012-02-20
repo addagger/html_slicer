@@ -22,8 +22,8 @@ module HtmlSlicer
     # * <tt>:slice</tt> is a hash of +slicing options+.
     # * <tt>:resize</tt> is a hash of +resizing options+.
     # 
-    # You can define any key of configuration you want. Otherwise, default configuration
-    # will be picked up automatically.
+    # You can define any configuration key you want.
+    # Otherwise, default configuration options (if available) will be picked up automatically.
     # 
     # === All configuration keys:
     # * <tt>:as</tt> is a name of basic accessor for sliced +object+.

@@ -1,7 +1,6 @@
 = HtmlSlicer
 
-A little gem for Rails 3 helps you to implement smart way to split textual content, the quick approach to create 'pageable' views for ActiveRecord Model's attributes or just independent strings or any other Ruby classes.
-Or course it can split HTML content. More over, it can 'resize' HTML tags having <tt>width=</tt> attribute*.
+A little gem for Rails 3 helps you implement a smart way to split textual content. This is a quick approach to create ‘pageable’ views for ActiveRecord Model’s attributes, just independent strings, or any other Ruby classes. Or course it can split HTML content. More over, it can ‘resize’ HTML tags through <tt>width=</tt> attribute*.
 
   * Imagine you want to resize <iframe> embeddings from YouTube saved in static content.
 
@@ -12,20 +11,19 @@ Or course it can split HTML content. More over, it can 'resize' HTML tags having
 Does not globally pollute +Array+, +Hash+, +Object+ or <tt>AR::Base</tt>.
 
 === Easy to use
-Bundle the gem, then your models are ready to implement slicing ability.
+Bundle the gem, then your models are ready to implement the slicing ability.
 
 === Flexible configuration
-Besides global configuration (default), you can create stylized app-level configurations, also any configuration can be tuned for each single one implementation.
+Besides global configuration (default), you can create stylized app-level configurations; also any configuration can be tuned for every single implementation.
 
 === Flexible options
-You can split your text by any Regexp clause, set up which node of HTML content you want to split, or which you don't. You can also use <tt>processor(s)</tt> to transform the content before it has to be sliced. Param name, used as slice number key accessor, supports to be nested in other one param key (nested params).
-<tt>Resizing</tt> HTML tags having <tt>width=</tt> attribute - is a nice feature too.
+You can split your text with any Regexp clause: set up which node from your HTML content you want to split, or which you don’t want to. You can also use processor(s) to transform the content before it has to be sliced. Param name, used as a (или the?) slice number key accessor, can be nested in another param key (nested params). Resizing HTML tags having <tt>width=</tt> attribute is a helpful feature too.
 
 === ORM & template engine agnostic
 Supports Rails 3 and multiple template engines (ERB, Haml).
 
 === Modern
-The slicer helper outputs the HTML5 <nav> tag by default. Plus, the helper supports Rails 3 unobtrusive Ajax.
+The slicer helper outputs the HTML5 <nav> tag by default. In addition, the helper supports Rails 3 unobtrusive Ajax.
 
 
 == Supported versions
@@ -63,12 +61,12 @@ where:
   end
   
 where:
-* <tt>:content</tt> is an attribute accessor for Article which return a target String object.
+* <tt>:content</tt> is an attribute accessor for Article which returns a target String object.
 * <tt>:as</tt> is a name of basic accessor for result.
 * <tt>:slice</tt> is a hash of <tt>slicing options</tt> as a part of configuration.
 * <tt>:resize</tt> is a hash of <tt>resizing options</tt> as a part of configuration.
 
-You can define any key of configuration you want. Otherwise, default configuration options (if available) will be picked up automatically.
+You can define any configuration key you want. Otherwise, default configuration options (if available) will be picked up automatically.
   
 Console:
   
@@ -109,9 +107,9 @@ All configuration keys:
 
 === Slicing options
 
-* <tt>:unit</tt> is a +Regexp/String/Hash+ description of text's units counted to split the text by slices.
+* <tt>:unit</tt> is a +Regexp/String/Hash+ description of text units counted to split the text by slices.
 When value is a +Hash+, it assumes the unit is a HTML tag (look at <tt>:only/:except</tt> options for details).
-Undefined value or +nil+ assumes it default Regexp /&#?\w+;|\S/. As you see it counts any regular character/or HTML special character as a unit.
+Undefined value or +nil+ assumes it by default Regexp /&#?\w+;|\S/. As you can see it counts any regular character or HTML special character as a unit.
 * <tt>:maximum</tt> is a +Fixnum+ number of units to be a one slice.
 
 If +:unit+ defined as Regexp or String, default value is 300.
@@ -121,29 +119,28 @@ If +:unit+ defined as Hash, default value is 10.
 If +:unit+ is default, default value is 2000.
 
 * <tt>:complete</tt> is a +Regexp+ description of a character used to complete the slice.
-For example in case you want to end the slice with the complete word, using :complete => /\s+|\z/ the counter would continue the slice until the first whitespace character.
+For example, if you want to end the slice with a complete word, using :complete => /s+|z/ the counter would continue the slice until the first whitespace character.
 * <tt>:limit</tt> - a +Fixnum+ limit number of slices.
 In many cases we just need the first slice to perform it as a partial.
 * <tt>:text_break</tt> - a responsible <tt>.to_s</tt> value of text breaks between slices.
-It can be suspension points or any other symbol.
+It can be an ellipsis or any other symbol.
 * <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to slice.*
 * <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to slice.*
 
-  * Actually the hash is a argument for HTML::Conditions class (the part of ActionPack's html_scanner block). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
+  * Actually the hash is an argument for HTML::Conditions class (the part of ActionPack's html_scanner code). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
   This is a very flexible utility to navigate via HTML content. Read native documentation for details.
   
   For example: ID for <tt><hr class="break"> tag</tt> is a hash: <tt>{:tag => "hr", :attributes => {:class => "break"}}</tt>
 
 === Resizing options
 
-* <tt>:width</tt> is a Fixnum number of pixels as a target value to squeeze the HTML tag. It does automatically proportional with the +:height+ (if existed). The percentage values ignored.
+* <tt>:width</tt> is a Fixnum number of pixels as a target value to squeeze the HTML tag. It does the resize automatically proportional with the +:height+ (if exists). The percentage values are ignored.
 * <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to resize.
 * <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to resize.
 
 === Processors
 
-Used to transform the source text before it sliced. Many of us are using any markup languages for dynamic contents.
-This is it. Just create any class as a subclass of HtmlSlicer::Processor, put it in +/lib/html_slicer_processors+ directory and define its name within the +:processors+ option.
+Processors are used to transform the source text before it is sliced. Many of us use various markup languages for dynamic contents. This is basically the same thing. Just create any class as a subclass of HtmlSlicer::Processor, put it in +/lib/html_slicer_processors+ directory and define its name within the +:processors+ option.
 
 Example:
   
@@ -155,18 +152,16 @@ Example:
     end
   end
 
-Processor class have to include +make+ method, which return transformed String. The +content+ accessor is a source String.
-
-Then you can pass the option <tt>:processors=>:textilized</tt>
-The value of option can be +Array+ of names, if you use more than one processors.
+Processor class has to include make method, which returns transformed String. The content accessor is a source String.
+Then you can set the option <tt>:processors => :textilized</tt>. The value of option can be Array of names, if you use more than one processor.
 
 === Configuration levels
 
-There are three levels of configuration. Missing options inherited from upper-level.
+There are three levels of configuration. Missing options are inherited from upper-level ones.
 
 === Global configuration
 
-The top-level configuration at +HtmlSlicer.config+, set required options:
+The top level configuration contains necessary options by default:
 
   window = 4
   outer_window = 0
@@ -174,7 +169,7 @@ The top-level configuration at +HtmlSlicer.config+, set required options:
   right = 0
   param_name = :slice
 
-You can override/complete global configuration like:
+You can override/complete global configuration this way:
 
   HtmlSlicer.configure do |config|
     config.slice = {:complete => /\s+|\z/, :maximum => 2000}
@@ -185,30 +180,30 @@ You can override/complete global configuration like:
 
 === Stylized configuration
 
-Along with common global configuration, you can define stylized configuration passing argument like:
+Along with common global configuration, you can define stylized configuration passing argument like this:
 
   HtmlSlicer.configure(:paged) do |config|
     config.as = :page
     config.param_name = :page
   end
 
-Missing options inherited from global.
+Missing options are inherited from global one.
 
 === Instance configuration
   
-Implementing HtmlSlicer accessor as:
+If you implement HtmlSlicer accessor this way:
 
   slice <method_name>, <configuration>, [:config => <:style>]*
 
-we can override/complete any configuration.
+you can override/complete any configuration.
   
-Using +:config+ key we can use one of stylized configurations like:
+By applying  :config key you can use one of stylized configurations:
   
   class Post < ActiveRecord::Base
     slice :content, :config => :paged, :slice = {:complete => /\s+/, :maximum => 3000}
   end
 
-Passing the block we get more flexible approach to configure slicer like:
+Through passing the block you get a more flexible approach to configure slicer:
   
   class Post < ActiveRecord::Base
     slice :content, :config => :paged, :as => :blabla do |config|
@@ -245,17 +240,17 @@ This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 
     <%= slice @article_paged %>
   This would output several slicing links such as <tt>« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »</tt>
 
-* specifing the "inner window" size (4 by default)
+* specifying the "inner window" size (4 by default)
 
     <%= slicing @article_paged, :window => 2 %>
   This would output something like <tt>... 5 6 7 8 9 ...</tt> when 7 is the current page.
 
-* specifing the "outer window" size (0 by default)
+* specifying the "outer window" size (0 by default)
 
     <%= slicing @article_paged, :outer_window => 3 %>
   This would output something like <tt>1 2 3 4 ...(snip)... 17 18 19 20</tt> while having 20 slices in total.
 
-* outer window can be separetely specified by +left+, +right+ (0 by default)
+* outer window can be separately specified by +left+, +right+ (0 by default)
 
     <%= slicing @article_paged, :left => 1, :right => 3 %>
   This would output something like <tt>1 ...(snip)... 18 19 20</tt> while having 20 slices in total.
@@ -265,10 +260,10 @@ This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 
     <%= slicing @article_paged, :param_name => :page %>
   This would modify the query parameter name on each links.
 
-* extra parameters (:+params+) for the links
+* extra parameters (:+params+) for the link
 
     <%= slicing @article_paged, :params => {:controller => 'foo', :action => 'show', :id => 21} %>
-  This would modify each link's +url_option+. :+controller+ and :+action+ might be the keys in common.
+  This would modify each link's +url_option+. :+controller+ and :+action+ might be the common keys.
 
 * Ajax links (crazy simple, but works perfectly!)
 
@@ -287,8 +282,7 @@ This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 
 
 === I18n and labels
 
-The default labels for 'first', 'last', 'previous', '...' and 'next' are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application.
-Keys and the default values are the following. You can override them by adding to a YAML file in your <tt>Rails.root/config/locales</tt> directory.
+The default labels for ‘first’, ‘last’, ‘previous’, ‘…’ and ‘next’ are stored in the I18n yaml inside the engine, and rendered through I18n API. You can switch the label value per I18n.locale for your internationalized application. Keys and the default values are listed below. You can override them by adding to a YAML file in your <tt>Rails.root/config/locales</tt> directory.
 
   en:
     views:
@@ -316,19 +310,19 @@ Examples:
 
 === Slicing a general String or ActiveModel (or any other) object
 
-There is no special approaches. Just +extend+ target class to +HtmlSlicer::Installer+ and call the method +slice+ as described before, like:
+There is no apecific approach to it. Just extend target class to +HtmlSlicer::Installer+ and call the method slice as described before:
 
   String.extend HtmlSlicer::Installer
   String.slice :to_s, :as => :page, :config => :for_string
 
 == Questions, Feedback
 
-Message me, I'll try to help everybody. Github (addagger), no Twitter account, Facebook (http://www.facebook.com/profile.php?id=100002178326782)
+Message me and I’ll do my best to help everybody. Github (addagger), no Twitter account, Facebook (http://www.facebook.com/profile.php?id=100002178326782)
 
 
 == Contributing to HtmlSlicer
 
-* Fork, fix, then send me a pull request.
+* Fork, fix, and then send me a pull request.
 
 
 == Copyright

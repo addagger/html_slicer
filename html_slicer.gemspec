@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["addagger@gmail.com"]
   s.homepage    = %q{http://vkvon.ru/projects/html_slicer}
   s.summary     = %q{HTML text slicer}
-  s.description = %q{A "smart" way to slice HTMLsed text to pages, also it can optionally resize included "width/height" attributes of HTML tags like <iframe>, <object>, <img> etc.}
+  s.description = %q{HtmlSlicer is a smart way to cut an HTML text into pieces. It also provides on option to resize "width"/"height" attributes of HTML tags, such as <iframe>, <object>, <img> or any other.}
   
   s.add_development_dependency "actionpack", ['>= 3.0.0']
 
