@@ -50,7 +50,7 @@ module HtmlSlicer
       #
       # === Example:
       #   
-      #   [:vehicle, :car, :ford, :mustang, "2 please"].hashup
+      #   hashup([:vehicle, :car, :ford, :mustang, "2 please"])
       #
       #   #=> {:vehicle=>{:car=>{:ford=>{:mustang=>"2 please"}}}}
       def hashup(array)
@@ -77,7 +77,7 @@ module HtmlSlicer
       # 
       #   h1 = {:breakfast => {:eggs => 2, :bread => 1}, :lunch => {:steak => 1, :salad => 1}}
       #   h2 = {:breakfast => {:coffee => :espresso, :juice => 1}, :lunch => {:tea => 2}, :dinner => :none}
-      #   h1.nested_merge(h2)
+      #   nested_merge(h1, h2)
       #   #=> {:breakfast=>{:eggs=>2, :bread=>1, :coffee=>:espresso, :juice=>1}, :lunch=>{:steak=>1, :salad=>1, :tea=>2}, :dinner=>:none}
       #
       def nested_merge(hash, other_hash = {})

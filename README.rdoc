@@ -17,7 +17,7 @@ Bundle the gem, then your models are ready to implement slicing.
 Besides global configuration (default), you can create stylized app-level configurations; also any configuration can be tuned for every single implementation.
 
 === Flexible options
-You can split your text with any Regexp clause: set up which node from your HTML content you want to split, or which you don’t want to. You can also use processor(s) to transform the content before it has to be sliced. Param name, used as a (или the?) slice number key accessor, can be nested in another param key (nested params). Resizing HTML tags having <tt>width=</tt> attribute is a helpful feature too.
+You can split your text with any Regexp clause: set up which node from your HTML content you want to split, or which you don’t want to. You can also use processor(s) to transform the content before it has to be sliced. Param name, used as a slice number key accessor, can be nested in another param key (nested params). Resizing HTML tags having <tt>width=</tt> attribute is a helpful feature too.
 
 === ORM & template engine agnostic
 Supports Rails 3 and multiple template engines (ERB, Haml).
