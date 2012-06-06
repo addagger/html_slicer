@@ -1,4 +1,4 @@
-= HtmlSlicer
+= html_slicer
 
 A little gem for Rails 3 helps you implement a smart way to split textual content. This is a quick approach to create ‘pageable’ views for ActiveRecord Model’s attributes, just independent strings, or any other Ruby classes. Or course it can split HTML content. More over, it can ‘resize’ HTML tags through <tt>width=</tt> attribute*.
 
@@ -84,7 +84,7 @@ Console:
   # => "rld
   <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"  
 
-The +slice!()+ method accepts number of slice (page). No argument (or +nil+) assumes it is number +1+. Passed slice number is remembered.
+The <tt>.slice!()</tt> method accepts number of slice (page). No argument (or +nil+) assumes it is number +1+. Passed slice number is remembered.
 
 === Configuration options
 
@@ -107,7 +107,7 @@ All configuration keys:
 
 * <tt>:unit</tt> is a +Regexp/String/Hash+ description of text units counted to split the text by slices.
 When value is a +Hash+, it assumes the unit is a HTML tag (look at <tt>:only/:except</tt> options for details).
-Undefined value or +nil+ assumes it by default regular expression +/&#?\w+;|\S/+. As you can see it counts any regular character or HTML special character as a unit.
+Undefined value or +nil+ assumes it by default regular expression <tt>/&#?\w+;|\S/</tt>. As you can see it counts any regular character or HTML special character as a unit.
 * <tt>:maximum</tt> is a +Fixnum+ number of units to be a one slice.
 
 If +:unit+ defined as Regexp or String, default value is 300.
@@ -117,7 +117,7 @@ If +:unit+ defined as Hash, default value is 10.
 If +:unit+ is default, default value is 2000.
 
 * <tt>:complete</tt> is a +Regexp+ description of a character used to complete the slice.
-For example, if you want to end the slice with a complete word, using :complete => /s+|z/ the counter would continue the slice until the first whitespace character.
+For example, if you want to end the slice with a complete word, using <tt>:complete => /s+|z/</tt> the counter would continue the slice until the first whitespace character.
 * <tt>:limit</tt> - a +Fixnum+ limit number of slices.
 In many cases we just need the first slice to perform it as a partial.
 * <tt>:text_break</tt> - a responsible <tt>.to_s</tt> value of text breaks between slices.
@@ -128,7 +128,7 @@ It can be an ellipsis or any other symbol.
   * Actually the hash is an argument for HTML::Conditions class (the part of ActionPack's html_scanner code). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
   This is a very flexible utility to navigate via HTML content. Read native documentation for details.
   
-  For example: ID for <tt><hr class="break"> tag</tt> is a hash: <tt>{:tag => "hr", :attributes => {:class => "break"}}</tt>
+  For example: ID for <tt><hr class="break"></tt> tag is a hash: <tt>{:tag => "hr", :attributes => {:class => "break"}}</tt>
 
 === Resizing options
 
@@ -315,7 +315,7 @@ There is no apecific approach to it. Just extend target class to HtmlSlicer::Ins
 
 == Questions, Feedback
 
-Message me and I’ll do my best to help everybody. Github (addagger), no Twitter account, Facebook (http://www.facebook.com/profile.php?id=100002178326782)
+Message me and I’ll do my best to help everybody. Github (addagger), no Twitter account, Facebook (http://www.facebook.com/valery.kvon)
 
 
 == Contributing to HtmlSlicer
