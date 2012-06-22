@@ -30,7 +30,7 @@ module HtmlSlicer
           raise(ArgumentError, "Slice number must be Fixnum in (1..#{slice_number}). #{slice.inspect} passed.")
         end
       end
-      to_s
+      self
     end
     
     # Textual representation according to a current slice.
