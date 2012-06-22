@@ -1,6 +1,6 @@
 module HtmlSlicer
+
   class Processor
-  
     attr_accessor :content
   
     def initialize(stuff = nil)

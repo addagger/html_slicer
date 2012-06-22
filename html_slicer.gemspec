@@ -10,10 +10,11 @@ Gem::Specification.new do |s|
   s.authors     = ["Valery Kvon"]
   s.email       = ["addagger@gmail.com"]
   s.homepage    = %q{http://vkvon.ru/projects/html_slicer}
-  s.summary     = %q{HTML text slicer}
+  s.summary     = %q{HTML text pagination for Ruby on Rails}
   s.description = %q{HtmlSlicer is a smart way to cut an HTML text into pieces. It also provides on option to resize "width"/"height" attributes of HTML tags, such as <iframe>, <object>, <img> or any other.}
   
   s.add_development_dependency "actionpack", ['>= 3.0.0']
+  s.add_development_dependency "activesupport", ['>= 3.0.0']
 
   s.rubyforge_project = "html_slicer"
 

@@ -1,6 +1,7 @@
 require 'rails'
 
 module HtmlSlicer
+  
   class Railtie < ::Rails::Railtie
     config.before_initialize do
       ActiveSupport.on_load :active_record do
@@ -12,4 +13,5 @@ module HtmlSlicer
       end
     end
   end
+  
 end

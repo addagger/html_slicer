@@ -1,8 +1,8 @@
 require 'html_slicer/installer'
 
 module HtmlSlicer
-  
   module ActiveRecordExtension
+    
     def self.included(base)
       base.extend(ClassMethods)
     end
@@ -18,5 +18,4 @@ module HtmlSlicer
     end
             
   end
-  
 end

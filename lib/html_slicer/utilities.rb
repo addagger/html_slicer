@@ -1,5 +1,4 @@
 module HtmlSlicer
-  
   module Utilities
 
     module ParseNode
@@ -127,5 +126,4 @@ module HtmlSlicer
     end
     
   end
-  
 end

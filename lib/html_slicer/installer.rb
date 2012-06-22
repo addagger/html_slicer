@@ -1,5 +1,4 @@
 module HtmlSlicer
-  
   module Installer
     
     # The basic implementation method.
@@ -109,10 +108,10 @@ module HtmlSlicer
       class_exec do
         define_method method_name do
           var_name = "@_#{method_name}"
-          instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Interface.new(send(attr_name), config.config))
+          instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Interface.new(self, attr_name, config.config))
         end
       end
     end
+    
   end
-  
 end
