@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 module HtmlSlicer
   
   # Make options adjective and convinient for processing needs.
@@ -5,15 +7,26 @@ module HtmlSlicer
   class Options #:nodoc:
     # Superclass
     attr_reader :only, :except
+
     def initialize(options)
       options ||= {}
       @only = options[:only]
       @except = options[:except]
     end
+
+    def hexdigest
+      Digest::SHA1.hexdigest(string_value)
+    end
+    
+    def string_value
+      instance_variables.collect {|name| name.to_s + ":" + instance_variable_get(name).to_s}.join
+    end
+    
   end
   
-  class SliceOptions < Options #:nodoc:
+  class SlicingOptions < Options #:nodoc:
     attr_reader :unit, :maximum, :complete, :text_break, :limit
+    
     def initialize(options)
       super(options)
       @unit = case options[:unit]
@@ -47,14 +60,17 @@ module HtmlSlicer
       end
       @text_break = options[:text_break]
     end
+
   end
   
-  class ResizeOptions < Options
+  class ResizingOptions < Options
     attr_reader :width
+    
     def initialize(options)
       super(options)
-      @width = options[:width]
+      @width = options[:width].to_i
     end
+
   end
   
 end

@@ -7,9 +7,6 @@ module HtmlSlicer
   def self.load!
     require 'html_slicer/utilities'
     require 'html_slicer/config'
-    require 'html_slicer/options'
-    require 'html_slicer/processor'
-    require 'html_slicer/document'
     require 'html_slicer/interface'
     require 'html_slicer/engine'
     require 'html_slicer/helpers/action_view_extension'

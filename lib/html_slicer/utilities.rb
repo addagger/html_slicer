@@ -5,8 +5,16 @@ module HtmlSlicer
       def parse(node, &block)
         node.children.each do |node|
           yield node if block_given?
-          parse(node, &block) if node.is_a?(HTML::Tag)
+          if node.is_a?(HTML::Tag)
+            parse(node, &block)
+          end
         end
+      end
+    end
+
+    module NodeIdent
+      def node_identify(node)
+        [node.line, node.position]
       end
     end
 

@@ -105,10 +105,16 @@ module HtmlSlicer
         end
       end
       method_name = config.as||"#{attr_name}_slice"
-      class_exec do
+      config.cache_to = "#{method_name}_cache" if config.cache_to == true
+      class_eval do
         define_method method_name do
           var_name = "@_#{method_name}"
           instance_variable_get(var_name)||instance_variable_set(var_name, HtmlSlicer::Interface.new(self, attr_name, config.config))
+        end
+      end
+      if config.cache_to && self.superclass == ActiveRecord::Base
+        before_save do
+          send(method_name).load!
         end
       end
     end

@@ -65,6 +65,7 @@ where:
 * <tt>:as</tt> is a name of basic accessor for result.
 * <tt>:slice</tt> is a hash of <tt>slicing options</tt> as a part of configuration.
 * <tt>:resize</tt> is a hash of <tt>resizing options</tt> as a part of configuration.
+* <tt>:cache_to</tt> is an accessor name used to store the cache. +True+ value make it by default.
 
 You can define any configuration key you want. Otherwise, default configuration options (if available) will be picked up automatically.
   
@@ -198,7 +199,7 @@ you can override/complete any configuration.
 By applying +:config+ key you can use one of stylized configurations:
   
   class Post < ActiveRecord::Base
-    slice :content, :config => :paged, :slice = {:complete => /\s+/, :maximum => 3000}
+    slice :content, :config => :paged, :slice => {:complete => /\s+/, :maximum => 3000}
   end
 
 Through passing the block you get a more flexible approach to configure slicer:
@@ -303,6 +304,51 @@ Examples:
 
   :param_name => [:article, :page]
   # means you define params[:article][:page] as a slice key.
+
+== Caching
+
+Caching implies that resizing/slicing procedures is both time-consuming processes will be started only at once, and once again will be launched only if the target content has been changed or resizing/slicing options has been modified.
+
+For caching, pass the option: <tt>:cache_to => true</tt> or <tt>:cache_to => :any_other_accessor</tt> within your config definition.
+
+=== ActiveRecord model
+
+Example:
+
+  class Article < ActiveRecord::Base
+    slice :content, :as => :paged, :slice => {:maximum => 1000, :complete => /\s+|\z/}, :cache_to => :content_page_cache
+  end
+
+Accessor method <tt>.content_page_cache=</tt> used for caching here.
+The first time when resizing and slicing procedures is called, generated maps will be cached and assigned to <tt>.content_page_cache</tt> accessor. Before the article saves itself, assigned dump stuff is recorded like any other attribute of article (callback <tt>before_save</tt> is set up). 
+
+Of course, attribute is recorded only as a column of the database :), So, before, add the column to a model:
+
+<tt>% rails generate migration AddContentPageCacheToArticle content_page_cache:text</tt>
+<tt>% rake db:migrate </tt>
+
+Slicing/resizing procedures repeat again only if target content has been changed or options has been modified. 
+
+=== ActiveModel
+
+Example:
+
+  class TextModel
+    attr_accessor :text, :paged_cache
+  
+    extend HtmlSlicer::Installer
+  
+    slice :text, :as => :paged, :slice => {:complete => /\s+/, :maximum => 300}, :cache_to => true
+  
+    def initialize(text)
+      @text = text
+    end
+  
+  end
+
++True+ value of <tt>:cache_to</tt> option set default cache accessor name consisted of basic accessor name + <tt>_page</tt>.
+
+In fact, caching ActiveModel not so significant in most cases, but still works. The next time you call slicing method, the cached resizing/slicing map(s) will be used.
 
 == More
 

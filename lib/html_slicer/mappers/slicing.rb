@@ -1,19 +1,28 @@
 module HtmlSlicer
-  module Makers
+  module Mappers
     
-    class Slicing # Slicing engine
-      attr_reader :options, :map
+    class Slicing # Slicing engine, generate and store resizing Map (hash)
+      attr_reader :options, :map, :slice_number
+      
+      class Map < Hash #:nodoc:
+        include HtmlSlicer::Utilities::NodeIdent
 
-      def initialize(document, options = {})
-        raise(TypeError, "HTML::Document expected, '#{document.class}' passed") unless document.is_a?(HTML::Document)
-        @options = SliceOptions.new(options)
-        @map = [Hash.new]
-        @options.unit.is_a?(Hash) ? slice_document_by_node!(document.root) : slice_document_by_text!(document.root)
+        def commit(node, number, value)
+          self[node_identify(node)] ||= {}
+          self[node_identify(node)].merge!(number => value)
+        end
+        def get(node, number)
+          self[node_identify(node)] ? self[node_identify(node)][number] : nil
+        end
       end
 
-      # Resturn number of slices.
-      def slice_number
-        @map.size
+      def initialize(document, options)
+        raise(TypeError, "HTML::Document expected, '#{document.class}' passed") unless document.is_a?(HTML::Document)
+        raise(TypeError, "HtmlSlicer::Options expected, '#{options.class}' passed") unless options.is_a?(HtmlSlicer::Options)
+        @options = options
+        @map = Map.new
+        @slice_number = 1
+        @options.unit.is_a?(Hash) ? process_by_node!(document.root) : process_by_text!(document.root)
       end
 
       private
@@ -21,7 +30,7 @@ module HtmlSlicer
       include HtmlSlicer::Utilities::ParseNode
       include HtmlSlicer::Utilities::NodeMatchExtension
 
-      def slice_document_by_text!(root)
+      def process_by_text!(root)
         units_count = 0
         parse(root) do |node|
           if node.is_a?(HTML::Text)
@@ -36,48 +45,48 @@ module HtmlSlicer
                   if units_count == @options.maximum
                     units_count = 0
                     index = complete!(content, match.end(0))
-                    @map.last[node.object_id] = Range.new(last_index, index-1)
+                    @map.commit(node, @slice_number, [last_index, index-1])
                     last_index = index
-                    limited? ? raise(Exception) : @map << Hash.new
+                    limited? ? raise(Exception) : @slice_number += 1
                   else
                     index = match.end(0)
                   end
                   if units_count > 0
-                    @map.last[node.object_id] = Range.new(last_index, -1)
+                    @map.commit(node, @slice_number, [last_index, -1])
                   end
                 end
               rescue Exception
                 break
               end
             else
-              @map.last[node.object_id] = Range.new(0, -1)
+              @map.commit(node, @slice_number, [0, -1])
             end
           else
-            @map.last[node.object_id] = true
+            @map.commit(node, @slice_number, true)
           end
         end
       end
 
-      def slice_document_by_node!(root)
+      def process_by_node!(root)
         units_count = 0
         parse(root) do |node|
           if node.is_a?(HTML::Text)
-            @map.last[node.object_id] = Range.new(0, -1)
+            @map.commit(node, @slice_number, [0, -1])
           else
-            @map.last[node.object_id] = true
+            @map.commit(node, @slice_number, true)
           end
           if node.match(@options.unit) && sliceable?(node)
             units_count += 1
             if units_count == @options.maximum
               units_count = 0
-              limited? ? break : @map << Hash.new
+              limited? ? break : @slice_number += 1
             end
           end
         end
       end
 
       def limited?
-        @options.limit && slice_number >= @options.limit
+        @options.limit && @slice_number >= @options.limit
       end
 
       def sanitize_content!(node)

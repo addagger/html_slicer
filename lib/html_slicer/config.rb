@@ -39,7 +39,7 @@ module HtmlSlicer
   
   # Config accessor for HtmlSlicer. Accepts argument as a +style+.
   def self.config(style = nil)
-    eval("@config#{"_#{style}" if style}")
+    eval("@config#{"_#{style}" if style}") || raise("Config style '#{style}' is invalid.")
   end
   
   # need a Class for 3.0
@@ -57,6 +57,7 @@ module HtmlSlicer
     config_accessor :left
     config_accessor :right
     config_accessor :param_name
+    config_accessor :cache_to
 
     def slice # Ugly coding. Override Hash::slice method
       config[:slice]
