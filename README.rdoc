@@ -325,6 +325,7 @@ The first time when resizing and slicing procedures is called, generated maps wi
 Of course, attribute is recorded only as a column of the database :), So, before, add the column to a model:
 
 <tt>% rails generate migration AddContentPageCacheToArticle content_page_cache:text</tt>
+
 <tt>% rake db:migrate </tt>
 
 Slicing/resizing procedures repeat again only if target content has been changed or options has been modified. 
