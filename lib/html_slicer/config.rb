@@ -68,9 +68,9 @@ module HtmlSlicer
     end
     
     def duplicate
-      dup = Configuration.new
-      dup.config.replace(deepcopy(config))
-      dup
+      Configuration.new.tap do |c|
+        c.config.replace(deepcopy(config))
+      end
     end
     
   end

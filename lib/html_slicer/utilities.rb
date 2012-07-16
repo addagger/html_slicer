@@ -64,14 +64,13 @@ module HtmlSlicer
         raise(TypeError, "Array expected!") unless array.is_a?(Array)
         raise(Exception, "At least 2 elements needed!") if array.size < 2
         value = array.delete_at(-1)
-        hash = {}
-        index = 0
-        last_hash = hash
-        while index < array.size
-          last_hash = last_hash[array.at(index)] = (index + 1 == array.size) ? value : {}
-          index += 1
+        {}.tap do |hash|
+          index = 0
+          while index < array.size
+            hash = hash[array.at(index)] = (index + 1 == array.size) ? value : {}
+            index += 1
+          end
         end
-        hash
       end      
     end
     

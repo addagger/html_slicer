@@ -159,7 +159,7 @@ module HtmlSlicer
       when HTML::Text then
         if sliced?
           if range = slicing.map.get(node, slice)
-            "#{node.content[Range.new(*range)]}#{slicing.options.text_break unless range.last == -1}"
+            "#{node.content[Range.new(*range)]}#{slicing.options.text_break unless range.last == -1 || !slicing.map.get(node, slice+1)}"
           end
         else
           node.to_s
