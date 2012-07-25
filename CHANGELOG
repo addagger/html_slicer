@@ -1,3 +1,8 @@
+== 0.1.2
+
+* Visual separating (:text_break) functionality improved.
+* "Read more": Now, pass dynamic content to the end of slice, directly from ActionView environment.
+
 == 0.1.1
 
 * Code optimized for speed.
