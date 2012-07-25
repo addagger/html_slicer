@@ -6,10 +6,11 @@ module HtmlSlicer
   # During the runtime object is used as an +maps+ accessor too.
   
   class CachedStuff
-    attr_reader :hexdigest, :resizing, :slicing
+    attr_reader :version, :hexdigest, :resizing, :slicing
     attr_accessor :changed, :time
     
     def initialize(text = nil)
+      @version = HtmlSlicer::VERSION
       @changed = false
       self.hexdigest_for = text if text
     end

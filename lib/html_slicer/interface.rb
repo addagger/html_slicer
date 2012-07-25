@@ -46,7 +46,13 @@ module HtmlSlicer
       @cached_stuff ||= 
       begin
         if options[:cache_to] # Getting recorded hash dump
-          Marshal.load(Base64.decode64(@env.send(options[:cache_to])))
+          Marshal.load(Base64.decode64(@env.send(options[:cache_to]))).tap do |cached_stuff|
+            if cached_stuff.time < Date.new(2012,7,25)
+              #### CACHE OUT OF DATE ####
+              warn "WARNING: html_slicer's cached stuff for #{@env.class.name} records has become unacceptable because of code changes. Update each record again. Visit http://vkvon.ru/projects/html_slicer for further details."
+              raise Exception 
+            end
+          end
         else
           raise Exception
         end
@@ -97,13 +103,9 @@ module HtmlSlicer
       self
     end
 
-    def to_s
+    def to_s(&block)
       load!
-      view(document.root, @current_slice)
-    end
-    
-    def inspect
-      to_s
+      view(document.root, @current_slice, &block)
     end
     
     def method_missing(*args, &block)
@@ -123,16 +125,16 @@ module HtmlSlicer
     # Return the current slice is a last or not?
     def last_slice?
       current_slice == slice_number
-    end    
+    end
 
     private
 
     # Return a textual representation of the node including all children.
-    def view(node, slice)
+    def view(node, slice, &block)
       slice = slice.to_i
       case node
       when HTML::Tag then
-        children_view = node.children.collect {|child| view(child, slice)}.compact.join
+        children_view = node.children.collect {|child| view(child, slice, &block)}.compact.join
         if resized?
           resizing.resize_node(node)
         end
@@ -159,7 +161,14 @@ module HtmlSlicer
       when HTML::Text then
         if sliced?
           if range = slicing.map.get(node, slice)
-            "#{node.content[Range.new(*range)]}#{slicing.options.text_break unless range.last == -1 || !slicing.map.get(node, slice+1)}"
+            (range.is_a?(Array) ? node.content[Range.new(*range)] : node.content).tap do |export|
+              unless range == true || (range.is_a?(Array) && range.last == -1) # broken text
+                export << slicing.options.text_break if slicing.options.text_break
+                if block_given?
+                  yield self, export
+                end
+              end
+            end
           end
         else
           node.to_s
@@ -167,7 +176,7 @@ module HtmlSlicer
       when HTML::CDATA then
         node.to_s
       when HTML::Node then
-        node.children.collect {|child| view(child, slice)}.compact.join
+        node.children.collect {|child| view(child, slice, &block)}.compact.join
       end
     end
 

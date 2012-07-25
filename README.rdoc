@@ -228,6 +228,7 @@ Controller:
   @article_paged = @article.paged.slice!(params[:slice])
 
 On a View just call the +slice+ helper:
+
   <%= slice @article_paged %>
 
 This will render several <tt>?slice=N</tt> slicing links surrounded by an HTML5 <+nav+> tag.
@@ -352,6 +353,24 @@ Example:
 In fact, caching ActiveModel not so significant in most cases, but still works. The next time you call slicing method, the cached resizing/slicing map(s) will be used.
 
 == More
+
+=== Page breaks with links!
+
+Passing the option <tt>:text_break => "..."</tt> is for mainly decorative purpose. Within the slice (page), the final textual content is complemented by ellipsis or any other symbol you like.
+If we'd like to place the URL link at the end, we can pass static link as well ("Read mode" or something...), but what if we'd like to pass dynamic link generated within the +view+ using the full power of ActionView and +@template+?
+
+So, we have:
+
+  @article = Article.find(1)
+  @article_paged = @article.paged.slice!(params[:slice])
+
+On a View we call <tt>.to_s()</tt> method and pass it the block:
+
+  <%= @article_paged.to_s {|slicer, text| text << link_to("Read more", url_for(url), :class => "read-more")} %>
+
+where:
+* <tt>slicer</tt> is a slicer object itself.
+* <tt>text</tt> is a final textual content of the current slice (page) which we complete with the generated link inside the block code.
 
 === Slicing a general String or ActiveModel (or any other) object
 

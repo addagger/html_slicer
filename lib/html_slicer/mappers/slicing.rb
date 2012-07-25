@@ -8,6 +8,7 @@ module HtmlSlicer
         include HtmlSlicer::Utilities::NodeIdent
 
         def commit(node, number, value)
+          value = true if value == [0, -1]
           self[node_identify(node)] ||= {}
           self[node_identify(node)].merge!(number => value)
         end
@@ -33,37 +34,33 @@ module HtmlSlicer
       def process_by_text!(root)
         units_count = 0
         parse(root) do |node|
-          if node.is_a?(HTML::Text)
-            if sliceable?(node)
-              sanitize_content!(node)
-              content = node.to_s
-              begin
-                start_index = 0
-                last_index = 0
-                content.scan(@options.unit) do
-                  if $~.begin(0) >= start_index
-                    units_count += 1
-                    index = $~.end(0)
-                    if units_count == @options.maximum
-                      units_count = 0
-                      if complete_regexp = @options.complete
-                        index = content.match(complete_regexp, index).try(:begin, 0)||index
-                        start_index = index
-                      end
-                      @map.commit(node, @slice_number, [last_index, index-1])
-                      last_index = index
-                      limited? ? raise(Exception) : @slice_number += 1
+          if node.is_a?(HTML::Text) && sliceable?(node)
+            sanitize_content!(node)
+            content = node.to_s
+            begin
+              start_index = 0
+              last_index = 0
+              content.scan(@options.unit) do
+                if $~.begin(0) >= start_index
+                  units_count += 1
+                  index = $~.end(0)
+                  if units_count == @options.maximum
+                    units_count = 0
+                    if complete_regexp = @options.complete
+                      index = content.match(complete_regexp, index).try(:begin, 0)||index
+                      start_index = index
                     end
+                    @map.commit(node, @slice_number, [last_index, index-1])
+                    last_index = index
+                    limited? ? raise(Exception) : @slice_number += 1
                   end
                 end
-                if units_count > 0
-                  @map.commit(node, @slice_number, [last_index, -1])
-                end
-              rescue Exception
-                break
               end
-            else
-              @map.commit(node, @slice_number, [0, -1])
+              if units_count > 0
+                @map.commit(node, @slice_number, [last_index, -1])
+              end
+            rescue Exception
+              break
             end
           else
             @map.commit(node, @slice_number, true)
@@ -74,11 +71,7 @@ module HtmlSlicer
       def process_by_node!(root)
         units_count = 0
         parse(root) do |node|
-          if node.is_a?(HTML::Text)
-            @map.commit(node, @slice_number, [0, -1])
-          else
-            @map.commit(node, @slice_number, true)
-          end
+          @map.commit(node, @slice_number, true)
           if node.match(@options.unit) && sliceable?(node)
             units_count += 1
             if units_count == @options.maximum
