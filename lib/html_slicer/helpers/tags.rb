@@ -1,8 +1,10 @@
-# This part of code is almost completely ported from +Kaminari+ gem by Akira Matsuda.
-# Look at http://github.com/amatsuda/kaminari/tree/master/lib/kaminari/helpers
 module HtmlSlicer
+  
   module Helpers
-    
+    # This part of code is almost completely ported from +Kaminari+ gem by Akira Matsuda.
+    # Look at http://github.com/amatsuda/kaminari/tree/master/lib/kaminari/helpers
+    # ===================================================================================
+    #    
     # A tag stands for an HTML tag inside the paginator.
     # Basically, a tag has its own partial template file, so every tag can be
     # rendered into String using its partial template.
@@ -29,8 +31,8 @@ module HtmlSlicer
       end
 
       def slice_url_for(slice)
-        # +HtmlSlicer::SmartParams+: return deep merged params with a new slice number value.
-        @template.url_for HtmlSlicer::SmartParams.new(@params, @param_name, (slice <= 1 ? nil : slice))
+        # +@params.merge_hashup+: returns deep merged params with a new slice number value.
+        @template.url_for @params.merge_hashup(*@param_name, (slice <= 1 ? nil : slice))
       end
     end
 

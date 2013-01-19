@@ -67,14 +67,12 @@ module HtmlSlicer
           values << absolute_resolution(node.attributes["width"])
         end
         if style = node.attributes["style"]
-          style.gsub!(/width:\s+\d+px;/) do |t|
-            t.gsub(/\d+/) do |w|
-              if block_given?
-                yield
-              else
-                values << w.to_i
-                w
-              end
+          style.gsub!(/width:\s+\d+(?=px);/) do |w|
+            if block_given?
+              yield
+            else
+              values << w.to_i
+              w
             end
           end
         end
@@ -89,14 +87,12 @@ module HtmlSlicer
           values << absolute_resolution(node.attributes["height"])
         end
         if style = node.attributes["style"]
-          style.gsub!(/height:\s+\d+px;/) do |t|
-            t.gsub(/\d+/) do |h|
-              if block_given?
-                yield
-              else
-                values << h.to_i
-                h
-              end
+          style.gsub!(/height:\s+\d+(?=px);/) do |h|
+            if block_given?
+              yield
+            else
+              values << h.to_i
+              h
             end
           end
         end

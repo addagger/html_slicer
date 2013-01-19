@@ -1,18 +1,18 @@
-# This part of code is almost completely ported from +Kaminari+ gem by Akira Matsuda.
-# Look at http://github.com/amatsuda/kaminari/tree/master/lib/kaminari/helpers
-
 require 'active_support/inflector'
 require 'action_view'
 require 'action_view/log_subscriber'
 require 'action_view/context'
-require 'html_slicer/helpers/smart_params'
 require 'html_slicer/helpers/tags'
 
 module HtmlSlicer
   
   module Helpers
+    # This part of code is almost completely ported from +Kaminari+ gem by Akira Matsuda.
+    # Look at http://github.com/amatsuda/kaminari/tree/master/lib/kaminari/helpers
+    # ===================================================================================
+    #
     # The main container tag
-    
+    #
     # Configure ActiveSupport inflections to pluralize 'slice' in a correct way = 'slices'. # By default would be 'slouse'.
     ActiveSupport::Inflector.inflections do |inflect|
       inflect.plural 'slice', 'slices'

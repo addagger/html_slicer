@@ -46,7 +46,6 @@ module HtmlSlicer
   class Configuration #:nodoc:
     
     include ActiveSupport::Configurable
-    include HtmlSlicer::Utilities::Deepcopy
     
     config_accessor :as
     config_accessor :slice
@@ -69,7 +68,7 @@ module HtmlSlicer
     
     def duplicate
       Configuration.new.tap do |c|
-        c.config.replace(deepcopy(config))
+        c.config.replace(config.deep_copy)
       end
     end
     

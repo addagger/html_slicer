@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   
   s.add_development_dependency "actionpack", ['>= 3.0.0']
   s.add_development_dependency "activesupport", ['>= 3.0.0']
+  s.add_development_dependency "active_tools", ['>= 0.0.2']
 
   s.rubyforge_project = "html_slicer"
 

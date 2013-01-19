@@ -1,7 +1,8 @@
-# This part of code is almost completely ported from +Kaminari+ gem by Akira Matsuda.
-# Look at http://github.com/amatsuda/kaminari/tree/master/lib/kaminari/helpers
 module HtmlSlicer
-
+  # This part of code is almost completely ported from +Kaminari+ gem by Akira Matsuda.
+  # Look at http://github.com/amatsuda/kaminari/tree/master/lib/kaminari/helpers
+  # ===================================================================================
+  #
   # The part of code, processing the +:param_name+ was rewritten by me.
   # Now you can define +:param_name+ as a +symbol+ or +string+, or as an +array of any object that responses +.to_s+ method and returns +string+.
   # Passing +array+ is the way to define nested :param_name.
@@ -54,7 +55,7 @@ module HtmlSlicer
     def link_to_next_slice(object, name, options = {}, &block)
       params = options[:params] ? self.params.merge(options.delete :params) : self.params
       param_name = options.delete(:param_name) || object.options.param_name
-      link_to_unless object.last_slice?, name, HtmlSlicer::SmartParams.new(params, param_name, (object.current_slice + 1)), options.reverse_merge(:rel => 'next') do
+      link_to_unless object.last_slice?, name, params.merge_hashup(*param_name, object.current_slice + 1), options.reverse_merge(:rel => 'next') do
         block.call if block
       end
     end
