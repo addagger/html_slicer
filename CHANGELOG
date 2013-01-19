@@ -1,3 +1,7 @@
+== 0.1.4
+
+* Dependency bugfixes.
+
 == 0.1.3
 
 * Code refactored. Specific tools and methods extracted to stand-alone 'active_tools' gem.
