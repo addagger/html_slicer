@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Valery Kvon"]
   s.email       = ["addagger@gmail.com"]
   s.homepage    = %q{http://vkvon.ru/projects/html_slicer}
-  s.summary     = %q{HTML text pagination for Ruby on Rails}
+  s.summary     = %q{Paginate (split) long HTML text to pages and partials. Resize embeddings on fly. Flexible configuration.}
   s.description = %q{HTML truncation & pagination for Rails 3. Optional feature: recalculate resolution values of HTML tags (within width/height/style attributes).}
   
   s.add_dependency "actionpack", ['>= 3.0.0']

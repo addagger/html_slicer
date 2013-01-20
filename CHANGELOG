@@ -1,6 +1,10 @@
+== 0.1.5
+
+* Gem description updated.
+
 == 0.1.4
 
-* Dependency bugfixes.
+* Dependency bugfixes. Update with 'bundle update html_slicer'!
 
 == 0.1.3
 
