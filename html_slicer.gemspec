@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["addagger@gmail.com"]
   s.homepage    = %q{http://vkvon.ru/projects/html_slicer}
   s.summary     = %q{HTML text pagination for Ruby on Rails}
-  s.description = %q{HTML truncation & pagination for Rails 3. It also provides on option to resize "width"/"height" HTML tags (also as CSS elements in "style="), such as <iframe>, <object>, <img> or any other.}
+  s.description = %q{HTML truncation & pagination for Rails 3. Optional feature: recalculate resolution values of HTML tags (within width/height/style attributes).}
   
   s.add_dependency "actionpack", ['>= 3.0.0']
   s.add_dependency "activesupport", ['>= 3.0.0']
