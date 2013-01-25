@@ -68,7 +68,23 @@ module HtmlSlicer
     
     def duplicate
       Configuration.new.tap do |c|
-        c.config.replace(config.deep_copy)
+				begin
+        	c.config.replace(config.deep_copy)
+				rescue
+					warn <<-EOW
+*** Html Slicer WARNING ***
+You have to install 'active_tools' by hand.
+
+Gemfile:
+================
+gem 'active_tools', '~> 0.0.2'
+
+This bug will be fixed later.
+
+Thank you.
+
+EOW
+				end
       end
     end
     
