@@ -42,7 +42,7 @@ module HtmlSlicer
 
     # Process initializer
     def load!
-      text = source
+      text = source||""
       @cached_stuff ||= 
       begin
         if options[:cache_to] # Getting recorded hash dump
