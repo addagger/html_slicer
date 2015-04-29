@@ -1,3 +1,7 @@
+== 0.2.0
+
+* Old HTML-scanner dependency has been deprecated. Project moved to Nokogiri!
+
 == 0.1.6
 
 * Dependency bugfixes.

@@ -60,19 +60,19 @@ module HtmlSlicer
         CachedStuff.new
       end
       if @document.blank? || !@cached_stuff.valid_text?(text) # Initialize new @document if not exist or content has been changed
-        @document = HTML::Document.new(text)
+        @fragment = ::Nokogiri::HTML.fragment(text)
         @cached_stuff.hexdigest_for = text
       end
       if @cached_stuff.changed? || !@cached_stuff.valid_resizing_options?(@resizing_options) # Initialize new resizing process if the content or options has been changed
         if @resizing_options
-          @cached_stuff.resizing = Resizing.new(@document, @resizing_options)
+          @cached_stuff.resizing = Resizing.new(@fragment, @resizing_options)
         else
           @cached_stuff.resizing = nil
         end
       end
       if @cached_stuff.changed? || !@cached_stuff.valid_slicing_options?(@slicing_options) # Initialize new slicing process if the content or options has been changed
         if @slicing_options
-          @cached_stuff.slicing = Slicing.new(@document, @slicing_options)
+          @cached_stuff.slicing = Slicing.new(@fragment, @slicing_options)
         else
           @cached_stuff.slicing = nil
         end

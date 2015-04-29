@@ -5,25 +5,23 @@ module HtmlSlicer
       attr_reader :options, :map, :slice_number
       
       class Map < Hash #:nodoc:
-        include HtmlSlicer::Utilities::NodeIdent
-
         def commit(node, number, value)
           value = true if value == [0, -1]
-          self[node_identify(node)] ||= {}
-          self[node_identify(node)].merge!(number => value)
+          self[node.path] ||= {}
+          self[node.path].merge!(number => value)
         end
         def get(node, number)
-          self[node_identify(node)] ? self[node_identify(node)][number] : nil
+          self[node.path] ? self[node.path][number] : nil
         end
       end
 
-      def initialize(document, options)
-        raise(TypeError, "HTML::Document expected, '#{document.class}' passed") unless document.is_a?(HTML::Document)
+      def initialize(fragment, options)
+        raise(TypeError, "Nokogiri::HTML::DocumentFragment expected, '#{document.class}' passed") unless document.is_a?(::Nokogiri::HTML::DocumentFragment)
         raise(TypeError, "HtmlSlicer::Options expected, '#{options.class}' passed") unless options.is_a?(HtmlSlicer::Options)
         @options = options
         @map = Map.new
         @slice_number = 1
-        @options.unit.is_a?(Hash) ? process_by_node!(document.root) : process_by_text!(document.root)
+        @options.unit.is_a?(Hash) ? process_by_node!(fragment) : process_by_text!(fragment)
       end
 
       private
@@ -34,7 +32,7 @@ module HtmlSlicer
       def process_by_text!(root)
         units_count = 0
         parse(root) do |node|
-          if node.is_a?(HTML::Text) && sliceable?(node)
+          if node.try(:element?) && sliceable?(node)
             sanitize_content!(node)
             content = node.to_s
             begin
@@ -87,7 +85,7 @@ module HtmlSlicer
       end
 
       def sanitize_content!(node)
-        content = HTML::FullSanitizer.new.sanitize(node.to_s)
+        content = Rails.version >= "4.2" ? ::Rails::Html::FullSanitizer.new.sanitize(node.to_s) : HTML::FullSanitizer.new.sanitize(node.to_s)
         node.instance_variable_set(:@content, content)
       end
 

@@ -4,26 +4,24 @@ module HtmlSlicer
     class Resizing # Resizing engine, generate and store slicing Map (hash)
       attr_reader :options, :map
 
-      class Map < Hash #:nodoc:
-        include HtmlSlicer::Utilities::NodeIdent
-        
+      class Map < Hash #:nodoc:        
         def commit(node, width, height)
-          self[node_identify(node)] = [width, height]
+          self[node.path] = [width, height]
         end
         def width(node)
-          self[node_identify(node)].try(:first)
+          self[node.path].try(:first)
         end
         def height(node)
-          self[node_identify(node)].try(:last)
+          self[node.path].try(:last)
         end
-      end    
+      end
 
-      def initialize(document, options)
-        raise(TypeError, "HTML::Document expected, '#{document.class}' passed") unless document.is_a?(HTML::Document)
+      def initialize(fragment, options)
+        raise(TypeError, "Nokogiri::HTML::DocumentFragment expected, '#{document.class}' passed") unless document.try(:fragment?)
         raise(TypeError, "HtmlSlicer::Options expected, '#{options.class}' passed") unless options.is_a?(HtmlSlicer::Options)
         @options = options
         @map = Map.new
-        process!(document.root)
+        process!(fragment)
       end
 
       def resize_node(node)
@@ -40,10 +38,10 @@ module HtmlSlicer
       include HtmlSlicer::Utilities::ParseNode
       include HtmlSlicer::Utilities::NodeMatchExtension
 
-      def process!(root)
-        parse(root) do |node|
-          if node.is_a?(HTML::Tag) && resizeable?(node)
-            target_width = node.parent.is_a?(HTML::Tag) ? @map.width(node.parent)||@options.width : @options.width
+      def process!(fragment)
+        parse(fragment) do |node|
+          if node.try(:element?) && resizeable?(node)
+            target_width = node.try(:element?) ? @map.width(node.parent)||@options.width : @options.width
             if target_width.present? && node_width = width(node)
               node_height = height(node)
               if node_width > target_width
@@ -67,7 +65,7 @@ module HtmlSlicer
           values << absolute_resolution(node.attributes["width"])
         end
         if style = node.attributes["style"]
-          style.gsub!(/width:\s+\d+(?=px);/) do |w|
+          style.content.gsub!(/width:\s+\d+(?=px);/) do |w|
             if block_given?
               yield
             else
@@ -87,7 +85,7 @@ module HtmlSlicer
           values << absolute_resolution(node.attributes["height"])
         end
         if style = node.attributes["style"]
-          style.gsub!(/height:\s+\d+(?=px);/) do |h|
+          style.content.gsub!(/height:\s+\d+(?=px);/) do |h|
             if block_given?
               yield
             else
