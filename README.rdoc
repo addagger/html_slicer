@@ -1,14 +1,14 @@
-= html_slicer
+= HTML-slicer
 
-A little gem for Rails 3 helps you implement a smart way to split textual content. This is a quick approach to create ‘pageable’ views for ActiveRecord Model’s attributes, just independent strings, or any other Ruby classes. Or course it can split HTML content. More over, it can ‘resize’ HTML tags through <tt>width=</tt> attribute*.
+A little gem for Rails 3+ helps you implement a smart way to split text/HTML content into pages. This is a short way to create ‘pageable’ views for models' string attributes or raw String objects. Optionally it can ‘resize’ on a fly any HTML elements having <tt>width=</tt> or <tt>style='width: *px;'</tt> attribute*.
 
-  * Imagine you want to resize <iframe> embeddings from YouTube saved in static content.
+  * for example <iframe> embeddings from YouTube or images or any other objects.
 
 
 == Features
 
 === Clean
-Does not globally pollute +Array+, +Hash+, +Object+ or <tt>AR::Base</tt>.
+Inspired by Kaminari. Does not globally pollute +Array+, +Hash+, +Object+ or <tt>AR::Base</tt>.
 
 === Easy to use
 Bundle the gem, then your models are ready to implement slicing.
@@ -20,7 +20,7 @@ Besides global configuration (default), you can create stylized app-level config
 You can split your text with any Regexp clause: set up which node from your HTML content you want to split, or which you don’t want to. You can also use processor(s) to transform the content before it has to be sliced. Param name, used as a slice number key accessor, can be nested in another param key (nested params). Resizing HTML tags having <tt>width=</tt> attribute is a helpful feature too.
 
 === ORM & template engine agnostic
-Supports Rails 3 and multiple template engines (ERB, Haml).
+Supports Rails 3+ and multiple template engines (ERB, Haml).
 
 === Modern
 The slicer helper outputs the HTML5 <nav> tag by default. In addition, the helper supports Rails 3 unobtrusive Ajax.
@@ -28,9 +28,9 @@ The slicer helper outputs the HTML5 <nav> tag by default. In addition, the helpe
 
 == Supported versions
 
-* Ruby 1.9.2, 1.9.3
+* Ruby 1.9.2+
 
-* Rails 3.0.x, 3.1, 3.2
+* Rails 3+
 
 * Haml 3+
 
@@ -39,6 +39,9 @@ The slicer helper outputs the HTML5 <nav> tag by default. In addition, the helpe
 
 Put this line in your Gemfile:
   gem 'html_slicer'
+  
+Dependencies (for versions 0.2.0+ & Rails 4.2+)
+  gem 'html-scanner', :github => 'addagger/html-scanner' # (fork from Jakob Skjerning, 'koppen/html-scanner')
 
 Then bundle:
   % bundle
@@ -52,7 +55,7 @@ Then bundle:
 
 where: 
 * <method_name> - any method name which returns source String (can be called with .send()).
-* <configuration> - Hash of configuration options and/or +:config+ parameter.
+* <configuration> - Hash of configuration options and/or +:config+ parameter as a symbol.
 
 === Basic example
 
@@ -62,30 +65,30 @@ where:
   
 where:
 * <tt>:content</tt> is an attribute accessor for Article which returns a target String object.
-* <tt>:as</tt> is a name of basic accessor for result.
+* <tt>:as</tt> is a name of basic accessor for the result.
 * <tt>:slice</tt> is a hash of <tt>slicing options</tt> as a part of configuration.
 * <tt>:resize</tt> is a hash of <tt>resizing options</tt> as a part of configuration.
 * <tt>:cache_to</tt> is an accessor name used to store the cache. +True+ value make it by default.
 
 You can define any configuration key you want. Otherwise, default configuration options (if available) will be picked up automatically.
   
-Console:
+Console example:
   
   @article = Article.find(1)
   @article.content
   # => "Words like violence break the silence\r\nCome crashing in into my little world\r\n<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/ms0bd_hCZsk\" frameborder=\"0\" allowfullscreen></iframe>\r\nPainful to me, pierce right through me\r\nCan't you understand, oh my little girl?"
 
   @article_paged = @article.paged
-  # => "Words like violence bre"
+  # => "Words like violence bre" # Page 1
   
-  @article_paged.slice!(2)
+  @article_paged.slice!(2) # Page 2
   # => "ak the silence"
 
-  @article_paged.slice!(4)
+  @article_paged.slice!(4) # Page 4
   # => "rld
   <iframe width="300" height="169" src="http://www.youtube.com/embed/ms0bd_hCZsk" frameborder="0" allowfullscreen></iframe>"  
 
-The <tt>.slice!()</tt> method accepts number of slice (page). No argument (or +nil+) assumes it is number +1+. Passed slice number is remembered.
+The <tt>.slice!()</tt> method accepts slice number (page) as an integer. Blank argument (or +nil+) assumes it is number +1+.
 
 === Configuration options
 
@@ -108,8 +111,8 @@ All configuration keys:
 
 * <tt>:unit</tt> is a +Regexp/String/Hash+ description of text units counted to split the text by slices.
 When value is a +Hash+, it assumes the unit is a HTML tag (look at <tt>:only/:except</tt> options for details).
-Undefined value or +nil+ assumes it by default regular expression <tt>/&#?\w+;|\S/</tt>. As you can see it counts any regular character or HTML special character as a unit.
-* <tt>:maximum</tt> is a +Fixnum+ number of units to be a one slice.
+Undefined value or +nil+ assumes it by default regular expression <tt>/&#?\w+;|\S/</tt>. As you can see it counts any regular character or HTML special character as a one unit.
+* <tt>:maximum</tt> is a +Fixnum+ number of units to be in a one slice.
 
 If +:unit+ defined as Regexp or String, default value is 300.
 
@@ -126,8 +129,8 @@ It can be an ellipsis or any other symbol.
 * <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to slice.*
 * <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to slice.*
 
-  * Actually the hash is an argument for HTML::Conditions class (the part of ActionPack's html_scanner code). Look at http://github.com/rails/rails/blob/master/actionpack/lib/action_controller/vendor/html-scanner/html/node.rb
-  This is a very flexible utility to navigate via HTML content. Read native documentation for details.
+  * Actually the hash is an argument for ::HTML::Conditions class (the part of <tt>html_scanner</tt> code). Look at http://github.com/koppen/html-scanner/blob/master/lib/html/node.rb
+  This is a very useful utility to navigate via HTML content. Read native documentation for details and thank you, Assaf Arkin for that legendary code being with Rails up to 4.1 since 2006.
   
   For example: ID for <tt><hr class="break"></tt> tag is a hash: <tt>{:tag => "hr", :attributes => {:class => "break"}}</tt>
 

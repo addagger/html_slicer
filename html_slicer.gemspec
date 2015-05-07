@@ -9,11 +9,10 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Valery Kvon"]
   s.email       = ["addagger@gmail.com"]
-  s.homepage    = %q{http://vkvon.ru/projects/html_slicer}
+  s.homepage    = %q{http://github.com/addagger/html_slicer}
   s.summary     = %q{Paginate (split) long HTML text to pages and partials. Resize embeddings on fly. Flexible configuration.}
-  s.description = %q{HTML truncation & pagination for Rails 3/4. Optional feature: recalculate resolution values of HTML tags (within width/height/style attributes).}
+  s.description = %q{HTML truncation & pagination for Rails 3+. Optional feature: recalculate resolution values of HTML tags (within width/height/style attributes).}
   
-  s.add_dependency "nokogiri", ['>= 1.6.0']
   s.add_dependency "activesupport", ['>= 3.0.0']
   s.add_dependency "active_tools", ['>= 0.0.2']
 

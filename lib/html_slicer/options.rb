@@ -19,7 +19,7 @@ module HtmlSlicer
     end
     
     def string_value
-      instance_variables.collect {|name| name.to_s + ":" + instance_variable_get(name).to_s}.join
+      instance_variables.map {|name| name.to_s + ":" + instance_variable_get(name).to_s}.join
     end
     
   end

@@ -31,6 +31,10 @@ module HtmlSlicer
       load!
     end
     
+    def inspect
+      "'#{to_s}'"
+    end
+    
     # Getting source content
     def source
       case options[:processors].present?
@@ -60,19 +64,19 @@ module HtmlSlicer
         CachedStuff.new
       end
       if @document.blank? || !@cached_stuff.valid_text?(text) # Initialize new @document if not exist or content has been changed
-        @fragment = ::Nokogiri::HTML.fragment(text)
+        @document = ::HTML::Document.new(text)
         @cached_stuff.hexdigest_for = text
       end
       if @cached_stuff.changed? || !@cached_stuff.valid_resizing_options?(@resizing_options) # Initialize new resizing process if the content or options has been changed
         if @resizing_options
-          @cached_stuff.resizing = Resizing.new(@fragment, @resizing_options)
+          @cached_stuff.resizing = Resizing.new(@document, @resizing_options)
         else
           @cached_stuff.resizing = nil
         end
       end
       if @cached_stuff.changed? || !@cached_stuff.valid_slicing_options?(@slicing_options) # Initialize new slicing process if the content or options has been changed
         if @slicing_options
-          @cached_stuff.slicing = Slicing.new(@fragment, @slicing_options)
+          @cached_stuff.slicing = Slicing.new(@document, @slicing_options)
         else
           @cached_stuff.slicing = nil
         end
@@ -133,8 +137,8 @@ module HtmlSlicer
     def view(node, slice, &block)
       slice = slice.to_i
       case node
-      when HTML::Tag then
-        children_view = node.children.collect {|child| view(child, slice, &block)}.compact.join
+      when ::HTML::Tag then
+        children_view = node.children.map {|child| view(child, slice, &block)}.compact.join
         if resized?
           resizing.resize_node(node)
         end
@@ -158,7 +162,7 @@ module HtmlSlicer
         else
           node.to_s
         end
-      when HTML::Text then
+      when ::HTML::Text then
         if sliced?
           if range = slicing.map.get(node, slice)
             (range.is_a?(Array) ? node.content[Range.new(*range)] : node.content).tap do |export|
@@ -173,10 +177,10 @@ module HtmlSlicer
         else
           node.to_s
         end
-      when HTML::CDATA then
+      when ::HTML::CDATA then
         node.to_s
-      when HTML::Node then
-        node.children.collect {|child| view(child, slice, &block)}.compact.join
+      when ::HTML::Node then
+        node.children.map {|child| view(child, slice, &block)}.compact.join
       end
     end
 

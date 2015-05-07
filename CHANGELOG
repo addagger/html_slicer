@@ -1,6 +1,6 @@
 == 0.2.0
 
-* Old HTML-scanner dependency has been deprecated. Project moved to Nokogiri!
+* html-scanner has been a part of Rails for a long time up to version 4.1. Now it's been deprecated and used as a stand-alone dependency.
 
 == 0.1.6
 

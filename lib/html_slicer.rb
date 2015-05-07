@@ -3,7 +3,6 @@
 require "html_slicer/version"
 
 module HtmlSlicer
-  
   def self.load!
     require 'html_slicer/utilities'
     require 'html_slicer/config'
@@ -13,7 +12,6 @@ module HtmlSlicer
     require 'html_slicer/helpers/slicer'
     require 'html_slicer/railtie'
   end
-  
 end
   
 HtmlSlicer.load!
