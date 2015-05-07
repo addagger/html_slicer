@@ -1,3 +1,7 @@
+== 0.2.1
+
+* bugfixes...
+
 == 0.2.0
 
 * html-scanner has been a part of Rails for a long time up to version 4.1. Now it's been deprecated and used as a stand-alone dependency.
