@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.summary     = %q{Paginate (split) long HTML text to pages and partials. Resize embeddings on fly. Flexible configuration.}
   s.description = %q{HTML truncation & pagination for Rails 3+. Optional feature: recalculate resolution values of HTML tags (within width/height/style attributes).}
   
-  s.add_runtime_dependency "activesupport", '~> 3.0'
-  s.add_runtime_dependency "active_tools", '~> 0.0'
+  s.add_dependency "activesupport", ['>= 3.0.0']
+  s.add_dependency "active_tools", ['>= 0.0.18']
 
   s.rubyforge_project = "html_slicer"
 
