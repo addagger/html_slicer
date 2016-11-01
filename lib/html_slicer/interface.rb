@@ -21,6 +21,7 @@ module HtmlSlicer
     attr_reader :options, :document, :current_slice, :cached_stuff
 
     delegate :slicing, :resizing, :to => :cached_stuff
+    delegate :present?, :blank?, :to => :to_s
 
     def initialize(env, method_name, options = {})
       @env, @method_name = env, method_name
