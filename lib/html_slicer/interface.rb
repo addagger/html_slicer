@@ -102,7 +102,7 @@ module HtmlSlicer
         if slice.to_i.in?(1..slice_number)
           @current_slice = slice.to_i
         else
-          raise(ArgumentError, "Slice number must be Fixnum in (1..#{slice_number}). #{slice.inspect} passed.")
+          raise(ArgumentError, "Slice number must be Integer in (1..#{slice_number}). #{slice.inspect} passed.")
         end
       end
       self

@@ -112,7 +112,7 @@ All configuration keys:
 * <tt>:unit</tt> is a +Regexp/String/Hash+ description of text units counted to split the text by slices.
 When value is a +Hash+, it assumes the unit is a HTML tag (look at <tt>:only/:except</tt> options for details).
 Undefined value or +nil+ assumes it by default regular expression <tt>/&#?\w+;|\S/</tt>. As you can see it counts any regular character or HTML special character as a one unit.
-* <tt>:maximum</tt> is a +Fixnum+ number of units to be in a one slice.
+* <tt>:maximum</tt> is a +Integer+ number of units to be in a one slice.
 
 If +:unit+ defined as Regexp or String, default value is 300.
 
@@ -122,7 +122,7 @@ If +:unit+ is default, default value is 2000.
 
 * <tt>:complete</tt> is a +Regexp+ description of a character used to complete the slice.
 For example, if you want to end the slice with a complete word, using <tt>:complete => /s+|z/</tt> the counter would continue the slice until the first whitespace character.
-* <tt>:limit</tt> - a +Fixnum+ limit number of slices.
+* <tt>:limit</tt> - a +Integer+ limit number of slices.
 In many cases we just need the first slice to perform it as a partial.
 * <tt>:text_break</tt> - a responsible <tt>.to_s</tt> value of text breaks between slices.
 It can be an ellipsis or any other symbol.
@@ -136,7 +136,7 @@ It can be an ellipsis or any other symbol.
 
 === Resizing options
 
-* <tt>:width</tt> is a Fixnum number of pixels as a target value to squeeze the HTML tag. It does the resize automatically proportional with the 'height=' (if the tag has one). The percentage values are ignored.
+* <tt>:width</tt> is a Integer number of pixels as a target value to squeeze the HTML tag. It does the resize automatically proportional with the 'height=' (if the tag has one). The percentage values are ignored.
 * <tt>:only</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content to resize.
 * <tt>:except</tt> is a +Hash+ or +Array+ of hashes, describes which exactly nodes of HTML content NOT to resize.
 

@@ -36,7 +36,7 @@ module HtmlSlicer
       else raise "Invalid :unit definition '#{options[:unit].inspect}'"
       end
       @maximum = case options[:maximum]
-      when Fixnum then
+      when Integer then
         if options[:maximum] > 0
           options[:maximum]
         else
@@ -55,7 +55,7 @@ module HtmlSlicer
       else raise "Invalid :complete option definition '#{options[:complete].inspect}'"
       end
       @limit = case options[:limit]
-      when Fixnum, nil then options[:limit]
+      when Integer, nil then options[:limit]
       else raise "Invalid :limit option definition '#{options[:limit].inspect}'"
       end
       @text_break = options[:text_break]
